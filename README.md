@@ -4,15 +4,15 @@
 
 <p align="center">
   <a href="https://github.com/Lamarq7eYT?tab=followers">
-    <img src="https://img.shields.io/github/followers/Lamarq7eYT?label=Followers&style=for-the-badge&color=ffffff&labelColor=000000&logo=github&logoColor=ffffff" alt="GitHub followers" />
+    <img src="https://img.shields.io/github/followers/Lamarq7eYT?label=Followers&style=for-the-badge&color=C77DFF&labelColor=050306&logo=github&logoColor=F2EAFB" alt="GitHub followers" />
   </a>
   <a href="https://github.com/Lamarq7eYT?tab=repositories">
-    <img src="https://img.shields.io/badge/Theme-Frame%20a%20Frame-ffffff?style=for-the-badge&labelColor=000000" alt="Frame a Frame theme" />
+    <img src="https://img.shields.io/badge/Theme-Living%20Darkness-C77DFF?style=for-the-badge&labelColor=050306" alt="Frame a Frame theme" />
   </a>
   <a href="https://github.com/Lamarq7eYT?tab=repositories">
-    <img src="https://img.shields.io/badge/Ink-Black%20%2F%20White-000000?style=for-the-badge&labelColor=ffffff&color=000000" alt="Black and white ink theme" />
+    <img src="https://img.shields.io/badge/Ink-Black%20%2F%20Deep%20Purple-2A083F?style=for-the-badge&labelColor=050306&color=2A083F" alt="Black and white ink theme" />
   </a>
-  <img src="https://komarev.com/ghpvc/?username=Lamarq7eYT&style=for-the-badge&color=000000&labelColor=ffffff&label=Profile+Views" alt="Profile views" />
+  <img src="https://komarev.com/ghpvc/?username=Lamarq7eYT&style=for-the-badge&color=7B2CBF&labelColor=050306&label=Profile+Views" alt="Profile views" />
 </p>
 
 <p align="center">
@@ -64,22 +64,22 @@ To be honest, I really like TypeScript; the stack I use most often in my day-to-
 
 <p align="center">
   <a href="https://github.com/Lamarq7eYT/AegisHub">
-    <img src="https://github-readme-stats-rust-tau-40.vercel.app/api/pin/?username=Lamarq7eYT&repo=AegisHub&bg_color=ffffff&title_color=111111&text_color=333333&icon_color=ff2d6b&border_color=111111" alt="AegisHub repository card" />
+    <img src="https://github-readme-stats-rust-tau-40.vercel.app/api/pin/?username=Lamarq7eYT&repo=AegisHub&bg_color=050306&title_color=C77DFF&text_color=F2EAFB&icon_color=9D4EDD&border_color=2A083F" alt="AegisHub repository card" />
   </a>
   <a href="https://github.com/Lamarq7eYT/AegisCore">
-    <img src="https://github-readme-stats-rust-tau-40.vercel.app/api/pin/?username=Lamarq7eYT&repo=AegisCore&bg_color=ffffff&title_color=111111&text_color=333333&icon_color=00a7c7&border_color=111111" alt="AegisCore repository card" />
+    <img src="https://github-readme-stats-rust-tau-40.vercel.app/api/pin/?username=Lamarq7eYT&repo=AegisCore&bg_color=050306&title_color=C77DFF&text_color=F2EAFB&icon_color=9D4EDD&border_color=2A083F" alt="AegisCore repository card" />
   </a>
 </p>
 
 <p align="center">
   <a href="https://github.com/Lamarq7eYT/AegisHub/stargazers">
-    <img src="https://img.shields.io/github/stars/Lamarq7eYT/AegisHub?style=for-the-badge&label=AegisHub%20Stars&color=ffffff&labelColor=000000&logo=github&logoColor=ffffff" alt="AegisHub stars" />
+    <img src="https://img.shields.io/github/stars/Lamarq7eYT/AegisHub?style=for-the-badge&label=AegisHub%20Stars&color=C77DFF&labelColor=050306&logo=github&logoColor=F2EAFB" alt="AegisHub stars" />
   </a>
   <a href="https://github.com/Lamarq7eYT/AegisCore/stargazers">
-    <img src="https://img.shields.io/github/stars/Lamarq7eYT/AegisCore?style=for-the-badge&label=AegisCore%20Stars&color=ffffff&labelColor=000000&logo=github&logoColor=ffffff" alt="AegisCore stars" />
+    <img src="https://img.shields.io/github/stars/Lamarq7eYT/AegisCore?style=for-the-badge&label=AegisCore%20Stars&color=C77DFF&labelColor=050306&logo=github&logoColor=F2EAFB" alt="AegisCore stars" />
   </a>
   <a href="https://github.com/Lamarq7eYT/HackerPage/stargazers">
-    <img src="https://img.shields.io/github/stars/Lamarq7eYT/HackerPage?style=for-the-badge&label=HackerPage%20Stars&color=ffffff&labelColor=000000&logo=github&logoColor=ffffff" alt="HackerPage stars" />
+    <img src="https://img.shields.io/github/stars/Lamarq7eYT/HackerPage?style=for-the-badge&label=HackerPage%20Stars&color=C77DFF&labelColor=050306&logo=github&logoColor=F2EAFB" alt="HackerPage stars" />
   </a>
 </p>
 
@@ -114,12 +114,12 @@ To be honest, I really like TypeScript; the stack I use most often in my day-to-
 ## Stats Roll
 
 <p align="center">
-  <img height="180em" src="https://github-readme-stats-rust-tau-40.vercel.app/api?username=Lamarq7eYT&show_icons=true&bg_color=ffffff&title_color=111111&text_color=333333&icon_color=ff2d6b&border_color=111111&hide_border=false&count_private=true" alt="Lamarq7eYT GitHub stats" />
-  <img height="180em" src="https://github-readme-stats-rust-tau-40.vercel.app/api/top-langs/?username=Lamarq7eYT&layout=compact&bg_color=ffffff&title_color=111111&text_color=333333&border_color=111111&langs_count=12" alt="Lamarq7eYT top languages" />
+  <img height="180em" src="https://github-readme-stats-rust-tau-40.vercel.app/api?username=Lamarq7eYT&show_icons=true&bg_color=050306&title_color=C77DFF&text_color=F2EAFB&icon_color=9D4EDD&border_color=2A083F&hide_border=false&count_private=true" alt="Lamarq7eYT GitHub stats" />
+  <img height="180em" src="https://github-readme-stats-rust-tau-40.vercel.app/api/top-langs/?username=Lamarq7eYT&layout=compact&bg_color=050306&title_color=C77DFF&text_color=F2EAFB&border_color=2A083F&langs_count=12" alt="Lamarq7eYT top languages" />
 </p>
 
 <p align="center">
-  <img src="https://streak-stats.demolab.com?user=Lamarq7eYT&background=FFFFFF&border=111111&stroke=111111&ring=111111&fire=ff2d6b&currStreakNum=111111&sideNums=111111&currStreakLabel=111111&sideLabels=333333&dates=555555" alt="Lamarq7eYT GitHub streak" />
+  <img src="https://streak-stats.demolab.com?user=Lamarq7eYT&background=050306&border=2A083F&stroke=7B2CBF&ring=C77DFF&fire=9D4EDD&currStreakNum=F2EAFB&sideNums=F2EAFB&currStreakLabel=C77DFF&sideLabels=A99AB8&dates=A99AB8" alt="Lamarq7eYT GitHub streak" />
 </p>
 
 <p align="center">
@@ -133,7 +133,7 @@ To be honest, I really like TypeScript; the stack I use most often in my day-to-
 </p>
 
 <p align="center">
-  <img src="https://github-profile-trophy.screw-hand.vercel.app/?username=Lamarq7eYT&theme=flat&no-frame=true&no-bg=true&margin-w=8&margin-h=8&column=4" alt="Live Lamarq7eYT GitHub profile trophies" />
+  <img src="https://github-profile-trophy.screw-hand.vercel.app/?username=Lamarq7eYT&theme=onestar&no-frame=true&no-bg=true&margin-w=8&margin-h=8&column=4" alt="Live Lamarq7eYT GitHub profile trophies" />
 </p>
 
 <p align="center">
@@ -143,7 +143,7 @@ To be honest, I really like TypeScript; the stack I use most often in my day-to-
 ## Activity Graph
 
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=Lamarq7eYT&bg_color=ffffff&color=111111&line=111111&point=ff2d6b&area=true&area_color=00000018&hide_border=false&border_color=111111" alt="Lamarq7eYT activity graph" />
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=Lamarq7eYT&bg_color=050306&color=F2EAFB&line=7B2CBF&point=C77DFF&area=true&area_color=2A083F66&hide_border=false&border_color=2A083F" alt="Lamarq7eYT activity graph" />
 </p>
 
 ---

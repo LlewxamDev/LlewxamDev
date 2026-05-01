@@ -3,18 +3,18 @@
   <desc id="desc">Frame-by-frame black and white ink film reel showing the main projects in the profile.</desc>
   <defs>
     <style>
-      .paper { fill: #ffffff; }
-      .ink { fill: #050505; }
-      .soft { fill: #050505; opacity: .1; }
-      .frame { fill: #ffffff; stroke: #050505; stroke-width: 2.4; }
-      .label { font-family: 'Courier New', Courier, monospace; font-size: 11px; font-weight: 900; fill: #050505; letter-spacing: 1px; }
-      .name { font-family: 'Courier New', Courier, monospace; font-size: 23px; font-weight: 900; fill: #050505; letter-spacing: 1px; }
-      .meta { font-family: 'Courier New', Courier, monospace; font-size: 12px; font-weight: 800; fill: #050505; }
-      .small { font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 900; fill: #ffffff; letter-spacing: 2px; }
-      .cyan { fill: #00e5ff; }
-      .pink { fill: #ff2d6b; }
-      .green { fill: #00ff88; }
-      .line { stroke: #050505; stroke-width: 2; stroke-linecap: round; fill: none; }
+      .paper { fill: #0A0610; }
+      .ink { fill: #F2EAFB; }
+      .soft { fill: #F2EAFB; opacity: .1; }
+      .frame { fill: #0A0610; stroke: #F2EAFB; stroke-width: 2.4; }
+      .label { font-family: 'Courier New', Courier, monospace; font-size: 11px; font-weight: 900; fill: #F2EAFB; letter-spacing: 1px; }
+      .name { font-family: 'Courier New', Courier, monospace; font-size: 23px; font-weight: 900; fill: #F2EAFB; letter-spacing: 1px; }
+      .meta { font-family: 'Courier New', Courier, monospace; font-size: 12px; font-weight: 800; fill: #F2EAFB; }
+      .small { font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 900; fill: #0A0610; letter-spacing: 2px; }
+      .cyan { fill: #7B2CBF; }
+      .pink { fill: #C77DFF; }
+      .green { fill: #9D4EDD; }
+      .line { stroke: #F2EAFB; stroke-width: 2; stroke-linecap: round; fill: none; }
       @keyframes flip {
         0%, 100% { opacity: .72; transform: translateY(0) rotate(0deg); }
         45% { opacity: 1; transform: translateY(-5px) rotate(-.7deg); }

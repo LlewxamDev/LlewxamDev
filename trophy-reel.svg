@@ -3,17 +3,17 @@
   <desc id="desc">Animated frame-by-frame trophy board for GitHub achievements in black and white ink style.</desc>
   <defs>
     <style>
-      .paper { fill: #ffffff; }
-      .ink { fill: #050505; }
-      .card { fill: #ffffff; stroke: #050505; stroke-width: 2.2; }
-      .shadow { fill: #050505; opacity: .12; }
-      .title { font-family: 'Courier New', Courier, monospace; font-size: 26px; font-weight: 900; letter-spacing: 3px; fill: #050505; }
-      .text { font-family: 'Courier New', Courier, monospace; font-size: 13px; font-weight: 900; fill: #050505; }
-      .small { font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 900; fill: #050505; letter-spacing: 1px; }
-      .white { fill: #ffffff; }
-      .pink { fill: #ff2d6b; }
-      .cyan { fill: #00e5ff; }
-      .green { fill: #00ff88; }
+      .paper { fill: #0A0610; }
+      .ink { fill: #F2EAFB; }
+      .card { fill: #0A0610; stroke: #F2EAFB; stroke-width: 2.2; }
+      .shadow { fill: #F2EAFB; opacity: .12; }
+      .title { font-family: 'Courier New', Courier, monospace; font-size: 26px; font-weight: 900; letter-spacing: 3px; fill: #F2EAFB; }
+      .text { font-family: 'Courier New', Courier, monospace; font-size: 13px; font-weight: 900; fill: #F2EAFB; }
+      .small { font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 900; fill: #F2EAFB; letter-spacing: 1px; }
+      .white { fill: #0A0610; }
+      .pink { fill: #C77DFF; }
+      .cyan { fill: #7B2CBF; }
+      .green { fill: #9D4EDD; }
       @keyframes lift {
         0%, 100% { opacity: .68; transform: translateY(0); }
         50% { opacity: 1; transform: translateY(-7px); }

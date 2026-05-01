@@ -3,12 +3,12 @@
   <desc id="desc">Black and white ink brush divider for a frame-by-frame themed GitHub profile.</desc>
   <defs>
     <style>
-      .paper { fill: #ffffff; }
-      .ink { fill: #050505; }
-      .rail { fill: #050505; }
-      .hole { fill: #ffffff; }
-      .line { stroke: #050505; stroke-width: 2; stroke-linecap: round; fill: none; }
-      .small { font-family: 'Courier New', Courier, monospace; font-size: 11px; font-weight: 800; fill: #050505; letter-spacing: 3px; }
+      .paper { fill: #0A0610; }
+      .ink { fill: #F2EAFB; }
+      .rail { fill: #F2EAFB; }
+      .hole { fill: #0A0610; }
+      .line { stroke: #F2EAFB; stroke-width: 2; stroke-linecap: round; fill: none; }
+      .small { font-family: 'Courier New', Courier, monospace; font-size: 11px; font-weight: 800; fill: #F2EAFB; letter-spacing: 3px; }
       @keyframes slide {
         0% { transform: translateX(-180px); opacity: 0; }
         20% { opacity: .9; }

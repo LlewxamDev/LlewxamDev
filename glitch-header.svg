@@ -2,150 +2,28 @@
   <title id="title">Lamarq7eYT - Frame a Frame Ink Header</title>
   <desc id="desc">Black and white ink frame-by-frame header with colored animated letters spelling Lamarq7eYT.</desc>
   <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#050306"/><stop offset="1" stop-color="#120818"/></linearGradient>
     <style>
-      .paper { fill: #ffffff; }
-      .ink { fill: #050505; }
-      .ink-soft { fill: #111111; opacity: .88; }
-      .scratch { stroke: #050505; stroke-width: 1.5; stroke-linecap: round; opacity: .7; }
-      .frame { fill: #ffffff; stroke: #050505; stroke-width: 2.4; }
-      .hole { fill: #050505; }
-      .letter {
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 38px;
-        font-weight: 900;
-      }
-      .cyan { fill: #00e5ff; }
-      .pink { fill: #ff2d6b; }
-      .green { fill: #00ff88; }
-      .black { fill: #050505; }
-      .title {
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 30px;
-        font-weight: 900;
-        letter-spacing: 4px;
-        fill: #050505;
-      }
-      .sub {
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        fill: #050505;
-      }
-      .label {
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 10px;
-        font-weight: 700;
-        fill: #050505;
-      }
-      @keyframes pop {
-        0%, 100% { opacity: .7; transform: translateY(0) scale(1); }
-        45% { opacity: 1; transform: translateY(-4px) scale(1.04); }
-      }
-      @keyframes smear {
-        0% { transform: translateX(-260px); opacity: 0; }
-        22% { opacity: .78; }
-        78% { opacity: .78; }
-        100% { transform: translateX(900px); opacity: 0; }
-      }
-      @keyframes drip {
-        0%, 100% { transform: translateY(0); opacity: .76; }
-        50% { transform: translateY(12px); opacity: 1; }
-      }
-      .f01 { animation: pop 2.2s steps(2, end) infinite; }
-      .f02 { animation: pop 2.2s steps(2, end) .10s infinite; }
-      .f03 { animation: pop 2.2s steps(2, end) .20s infinite; }
-      .f04 { animation: pop 2.2s steps(2, end) .30s infinite; }
-      .f05 { animation: pop 2.2s steps(2, end) .40s infinite; }
-      .f06 { animation: pop 2.2s steps(2, end) .50s infinite; }
-      .f07 { animation: pop 2.2s steps(2, end) .60s infinite; }
-      .f08 { animation: pop 2.2s steps(2, end) .70s infinite; }
-      .f09 { animation: pop 2.2s steps(2, end) .80s infinite; }
-      .f10 { animation: pop 2.2s steps(2, end) .90s infinite; }
-      .smear { animation: smear 4.8s linear infinite; }
-      .drip-a { animation: drip 3.2s ease-in-out infinite; }
-      .drip-b { animation: drip 3.8s ease-in-out .4s infinite; }
-      .drip-c { animation: drip 3.4s ease-in-out .8s infinite; }
+      .t{font-family:'Courier New',monospace;fill:#F2EAFB}.s{fill:#A99AB8}.g{fill:#C77DFF}.h{fill:#2A083F;stroke:#7B2CBF;stroke-width:1.3}
+      @keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+      @keyframes blink{0%,44%,100%{opacity:.1}46%,50%{opacity:.95}}
+      @keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(10px)}}
+      .handL,.handR,.handB{opacity:.2;animation:breathe 9s ease-in-out infinite}.handR{animation-delay:1.5s}.handB{animation-delay:3s}
+      .eye{animation:blink 8s infinite}
+      .mist{animation:drift 16s ease-in-out infinite}
     </style>
   </defs>
-
-  <rect class="paper" width="860" height="250" />
-  <path class="ink" d="M0 0H860V26C777 19 703 36 623 22C539 7 488 31 414 22C334 12 270 4 202 22C121 43 67 15 0 32Z"/>
-  <path class="ink" d="M0 224C73 236 142 213 219 229C292 244 356 226 427 234C513 244 596 218 675 229C752 240 805 224 860 219V250H0Z"/>
-  <path class="ink-soft" d="M65 161C129 132 199 169 262 145C338 116 396 163 476 138C554 113 616 151 697 130C750 116 800 126 846 116V145C773 153 724 174 650 159C570 143 510 177 432 158C347 137 294 179 214 160C148 145 101 178 34 173Z"/>
-
-  <g opacity=".95">
-    <circle class="ink drip-a" cx="88" cy="42" r="5"/>
-    <circle class="ink drip-b" cx="124" cy="35" r="3"/>
-    <circle class="ink drip-c" cx="735" cy="34" r="4"/>
-    <circle class="ink drip-b" cx="792" cy="44" r="6"/>
-    <circle class="ink drip-a" cx="256" cy="218" r="4"/>
-    <circle class="ink drip-c" cx="621" cy="216" r="5"/>
+  <rect width="860" height="250" fill="url(#bg)"/>
+  <path class="mist" d="M0 25C140 5 230 45 332 24C433 4 535 40 640 22C725 8 792 13 860 7V65C760 70 690 95 595 83C498 72 410 97 316 84C219 70 127 95 0 81Z" fill="#1A001F" opacity=".75"/>
+  <g class="handL"><path d="M22 60C66 79 86 130 73 182C46 177 27 160 18 138C9 116 8 84 22 60Z" fill="#2A083F"/><path d="M84 75C109 102 112 142 94 178" stroke="#C77DFF" opacity=".4"/></g>
+  <g class="handR"><path d="M838 58C794 80 774 132 787 186C814 180 833 161 842 138C851 115 852 84 838 58Z" fill="#2A083F"/><path d="M776 74C751 100 747 143 766 182" stroke="#C77DFF" opacity=".4"/></g>
+  <g class="handB"><path d="M300 232C338 209 386 204 430 219C474 204 521 209 560 232" fill="none" stroke="#7B2CBF" stroke-width="12" stroke-linecap="round" opacity=".2"/></g>
+  <text x="430" y="72" text-anchor="middle" class="t" style="font-size:16px;letter-spacing:4px">Llewxam</text>
+  <g transform="translate(145 92)">
+    <rect x="0" y="0" width="570" height="84" rx="8" fill="#0A0610" stroke="#2A083F"/>
+    <text x="285" y="54" text-anchor="middle" class="t" style="font-size:44px;font-weight:900;letter-spacing:6px">LAMARQ7EYT</text>
+    <ellipse class="eye" cx="88" cy="20" rx="8" ry="3" fill="#C77DFF"/><ellipse class="eye" cx="482" cy="20" rx="8" ry="3" fill="#C77DFF" style="animation-delay:1.3s"/>
   </g>
-
-  <g class="smear" opacity=".35">
-    <path class="ink" d="M0 84C53 66 89 96 136 79C187 60 225 88 271 73C321 56 360 90 405 73V101C359 112 322 91 276 108C229 125 187 100 139 114C88 129 50 104 0 119Z"/>
-  </g>
-
-  <rect x="26" y="54" width="808" height="112" rx="7" fill="#ffffff" stroke="#050505" stroke-width="3" />
-
-  <g>
-    <rect class="hole" x="42" y="65" width="18" height="14" />
-    <rect class="hole" x="82" y="65" width="18" height="14" />
-    <rect class="hole" x="122" y="65" width="18" height="14" />
-    <rect class="hole" x="162" y="65" width="18" height="14" />
-    <rect class="hole" x="202" y="65" width="18" height="14" />
-    <rect class="hole" x="242" y="65" width="18" height="14" />
-    <rect class="hole" x="282" y="65" width="18" height="14" />
-    <rect class="hole" x="322" y="65" width="18" height="14" />
-    <rect class="hole" x="362" y="65" width="18" height="14" />
-    <rect class="hole" x="402" y="65" width="18" height="14" />
-    <rect class="hole" x="442" y="65" width="18" height="14" />
-    <rect class="hole" x="482" y="65" width="18" height="14" />
-    <rect class="hole" x="522" y="65" width="18" height="14" />
-    <rect class="hole" x="562" y="65" width="18" height="14" />
-    <rect class="hole" x="602" y="65" width="18" height="14" />
-    <rect class="hole" x="642" y="65" width="18" height="14" />
-    <rect class="hole" x="682" y="65" width="18" height="14" />
-    <rect class="hole" x="722" y="65" width="18" height="14" />
-    <rect class="hole" x="762" y="65" width="18" height="14" />
-    <rect class="hole" x="802" y="65" width="18" height="14" />
-    <rect class="hole" x="42" y="141" width="18" height="14" />
-    <rect class="hole" x="82" y="141" width="18" height="14" />
-    <rect class="hole" x="122" y="141" width="18" height="14" />
-    <rect class="hole" x="162" y="141" width="18" height="14" />
-    <rect class="hole" x="202" y="141" width="18" height="14" />
-    <rect class="hole" x="242" y="141" width="18" height="14" />
-    <rect class="hole" x="282" y="141" width="18" height="14" />
-    <rect class="hole" x="322" y="141" width="18" height="14" />
-    <rect class="hole" x="362" y="141" width="18" height="14" />
-    <rect class="hole" x="402" y="141" width="18" height="14" />
-    <rect class="hole" x="442" y="141" width="18" height="14" />
-    <rect class="hole" x="482" y="141" width="18" height="14" />
-    <rect class="hole" x="522" y="141" width="18" height="14" />
-    <rect class="hole" x="562" y="141" width="18" height="14" />
-    <rect class="hole" x="602" y="141" width="18" height="14" />
-    <rect class="hole" x="642" y="141" width="18" height="14" />
-    <rect class="hole" x="682" y="141" width="18" height="14" />
-    <rect class="hole" x="722" y="141" width="18" height="14" />
-    <rect class="hole" x="762" y="141" width="18" height="14" />
-    <rect class="hole" x="802" y="141" width="18" height="14" />
-  </g>
-
-  <g transform="translate(57 88)">
-    <g class="f01"><rect class="frame" x="0" y="0" width="60" height="40"/><text class="letter green" x="30" y="30" text-anchor="middle">L</text><text class="label" x="30" y="54" text-anchor="middle">001</text></g>
-    <g class="f02"><rect class="frame" x="75" y="0" width="60" height="40"/><text class="letter pink" x="105" y="30" text-anchor="middle">A</text><text class="label" x="105" y="54" text-anchor="middle">002</text></g>
-    <g class="f03"><rect class="frame" x="150" y="0" width="60" height="40"/><text class="letter black" x="180" y="30" text-anchor="middle">M</text><text class="label" x="180" y="54" text-anchor="middle">003</text></g>
-    <g class="f04"><rect class="frame" x="225" y="0" width="60" height="40"/><text class="letter cyan" x="255" y="30" text-anchor="middle">A</text><text class="label" x="255" y="54" text-anchor="middle">004</text></g>
-    <g class="f05"><rect class="frame" x="300" y="0" width="60" height="40"/><text class="letter green" x="330" y="30" text-anchor="middle">R</text><text class="label" x="330" y="54" text-anchor="middle">005</text></g>
-    <g class="f06"><rect class="frame" x="375" y="0" width="60" height="40"/><text class="letter black" x="405" y="30" text-anchor="middle">Q</text><text class="label" x="405" y="54" text-anchor="middle">006</text></g>
-    <g class="f07"><rect class="frame" x="450" y="0" width="60" height="40"/><text class="letter pink" x="480" y="30" text-anchor="middle">7</text><text class="label" x="480" y="54" text-anchor="middle">007</text></g>
-    <g class="f08"><rect class="frame" x="525" y="0" width="60" height="40"/><text class="letter cyan" x="555" y="30" text-anchor="middle">E</text><text class="label" x="555" y="54" text-anchor="middle">008</text></g>
-    <g class="f09"><rect class="frame" x="600" y="0" width="60" height="40"/><text class="letter black" x="630" y="30" text-anchor="middle">Y</text><text class="label" x="630" y="54" text-anchor="middle">009</text></g>
-    <g class="f10"><rect class="frame" x="675" y="0" width="60" height="40"/><text class="letter green" x="705" y="30" text-anchor="middle">T</text><text class="label" x="705" y="54" text-anchor="middle">010</text></g>
-  </g>
-
-  <path class="scratch" d="M72 184C118 173 166 196 212 183M244 190C310 170 356 197 412 181M456 185C520 171 580 195 636 180M684 188C724 177 768 188 812 178"/>
-  <text class="title" x="430" y="207" text-anchor="middle">FRAME A FRAME</text>
-  <text class="sub" x="430" y="230" text-anchor="middle">BLACK INK / WHITE PAPER / COLORED MOTION</text>
+  <text x="430" y="205" text-anchor="middle" class="g" style="font-family:'Courier New',monospace;font-size:28px;letter-spacing:4px">FRAME A FRAME</text>
+  <text x="430" y="228" text-anchor="middle" class="s" style="font-family:'Courier New',monospace;font-size:12px;letter-spacing:3px">BLACK INK / WHITE PAPER / COLORED MOTION</text>
 </svg>

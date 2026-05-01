@@ -3,24 +3,24 @@
   <desc id="desc">One white ink phrase appears at a time, then vanishes through black frame cuts.</desc>
   <defs>
     <style>
-      .bg { fill: #050505; }
-      .paper { fill: #ffffff; }
-      .black { fill: #050505; }
+      .bg { fill: #F2EAFB; }
+      .paper { fill: #0A0610; }
+      .black { fill: #F2EAFB; }
       .line {
         font-family: 'Courier New', Courier, monospace;
         font-size: 18px;
         font-weight: 900;
         letter-spacing: .7px;
-        fill: #ffffff;
+        fill: #0A0610;
       }
       .label {
         font-family: 'Courier New', Courier, monospace;
         font-size: 10px;
         font-weight: 900;
         letter-spacing: 2px;
-        fill: #ffffff;
+        fill: #0A0610;
       }
-      .hole { fill: #ffffff; opacity: .92; }
+      .hole { fill: #0A0610; opacity: .92; }
     </style>
   </defs>
 

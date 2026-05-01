@@ -3,18 +3,18 @@
   <desc id="desc">A black and white ink film-sheet SVG used to visually connect the whole GitHub profile README.</desc>
   <defs>
     <style>
-      .paper { fill: #ffffff; }
-      .ink { fill: #050505; }
-      .soft { fill: #050505; opacity: .14; }
-      .line { stroke: #050505; stroke-width: 2; stroke-linecap: round; fill: none; }
-      .hair { stroke: #050505; stroke-width: 1; stroke-linecap: round; fill: none; opacity: .55; }
-      .title { font-family: 'Courier New', Courier, monospace; font-size: 34px; font-weight: 900; letter-spacing: 5px; fill: #050505; }
-      .sub { font-family: 'Courier New', Courier, monospace; font-size: 12px; font-weight: 800; letter-spacing: 2px; fill: #050505; }
-      .keyword { font-family: 'Courier New', Courier, monospace; font-size: 13px; font-weight: 900; letter-spacing: 1px; fill: #050505; }
-      .small { font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 800; fill: #ffffff; letter-spacing: 2px; }
-      .cyan { fill: #00e5ff; }
-      .pink { fill: #ff2d6b; }
-      .green { fill: #00ff88; }
+      .paper { fill: #0A0610; }
+      .ink { fill: #F2EAFB; }
+      .soft { fill: #F2EAFB; opacity: .14; }
+      .line { stroke: #F2EAFB; stroke-width: 2; stroke-linecap: round; fill: none; }
+      .hair { stroke: #F2EAFB; stroke-width: 1; stroke-linecap: round; fill: none; opacity: .55; }
+      .title { font-family: 'Courier New', Courier, monospace; font-size: 34px; font-weight: 900; letter-spacing: 5px; fill: #F2EAFB; }
+      .sub { font-family: 'Courier New', Courier, monospace; font-size: 12px; font-weight: 800; letter-spacing: 2px; fill: #F2EAFB; }
+      .keyword { font-family: 'Courier New', Courier, monospace; font-size: 13px; font-weight: 900; letter-spacing: 1px; fill: #F2EAFB; }
+      .small { font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 800; fill: #0A0610; letter-spacing: 2px; }
+      .cyan { fill: #7B2CBF; }
+      .pink { fill: #C77DFF; }
+      .green { fill: #9D4EDD; }
       @keyframes pass {
         0% { transform: translateX(-220px); opacity: 0; }
         18% { opacity: .88; }

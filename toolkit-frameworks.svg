@@ -3,14 +3,14 @@
   <desc id="desc">Animated ink and film toolkit reel with real tool logos.</desc>
   <defs>
     <style>
-      .bg { fill:#050505; }
-      .paper { fill:#ffffff; }
-      .card { fill:#ffffff; stroke:#050505; stroke-width:2; }
-      .logoCell { fill:#ffffff; stroke:#050505; stroke-width:2; }
-      .cut { stroke:#050505; stroke-width:2; }
-      .title { font-family:'Courier New', Courier, monospace; font-size:18px; font-weight:900; letter-spacing:3px; fill:#050505; stroke:#ffffff; stroke-width:2px; paint-order:stroke; }
-      .name { font-family:'Courier New', Courier, monospace; font-size:13px; font-weight:900; letter-spacing:1px; fill:#050505; }
-      .small { font-family:'Courier New', Courier, monospace; font-size:9px; font-weight:900; fill:#ffffff; letter-spacing:2px; }
+      .bg { fill:#050306; }
+      .paper { fill:#0A0610; }
+      .card { fill:#0A0610; stroke:#7B2CBF; stroke-width:2; }
+      .logoCell { fill:#120818; stroke:#2A083F; stroke-width:2; }
+      .cut { stroke:#2A083F; stroke-width:2; }
+      .title { font-family:'Courier New', Courier, monospace; font-size:18px; font-weight:900; letter-spacing:3px; fill:#F2EAFB; stroke:#2A083F; stroke-width:2px; paint-order:stroke; }
+      .name { font-family:'Courier New', Courier, monospace; font-size:13px; font-weight:900; letter-spacing:1px; fill:#F2EAFB; }
+      .small { font-family:'Courier New', Courier, monospace; font-size:9px; font-weight:900; fill:#A99AB8; letter-spacing:2px; }
       @keyframes lift { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
       @keyframes pass { 0%{transform:translateX(-220px);opacity:0} 25%,75%{opacity:.65} 100%{transform:translateX(900px);opacity:0} }
       .a1{animation:lift 3s steps(2,end) infinite}.a2{animation:lift 3s steps(2,end) .18s infinite}.a3{animation:lift 3s steps(2,end) .36s infinite}.a4{animation:lift 3s steps(2,end) .54s infinite}.a5{animation:lift 3s steps(2,end) .72s infinite}
