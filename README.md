@@ -1,14 +1,14 @@
 <!--
   PROFILE README SPECIAL
   Art direction: cyberpunk anime HUD / futuristic terminal / character selection screen.
-  No official assets are included here. Replace placeholders with assets you own or have permission to use.
+  No official assets are included here. All SVGs in ./assets are original, editable, and GitHub README safe.
 -->
 
+<!-- HERO / BOOT SCREEN -->
 <p align="center">
-  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=230&section=header&text=MAXWELL.EXE&fontSize=56&fontAlignY=38&fontColor=00F5FF&desc=Illegal%20creative%20system%20online&descSize=16&descAlignY=60&animation=twinkling&color=0:050510,45:070A12,75:8A2BE2,100:FF2ED1" alt="MAXWELL.EXE cyberpunk boot header" />
+  <img width="100%" src="./assets/maxwell-boot-banner.svg" alt="MAXWELL.EXE animated cyberpunk boot banner" />
 </p>
 
-<!-- HERO / BOOT SCREEN -->
 <p align="center">
   <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=800&size=24&duration=2100&pause=600&color=FCEE09&center=true&vCenter=true&width=900&lines=SYSTEM+BOOTING...;NIGHT+CITY+SIGNAL+FOUND...;CREATOR+PROFILE+DETECTED...;MAXWELL.EXE+INITIALIZED" alt="Boot sequence typing animation" />
 </p>
@@ -21,11 +21,6 @@
     <img src="https://img.shields.io/badge/STATUS-TRAINING%20ARC-FCEE09?style=for-the-badge&labelColor=050510" alt="Status Training Arc" />
   </a>
   <img src="https://komarev.com/ghpvc/?username=Lamarq7eYT&style=for-the-badge&color=FF2ED1&labelColor=050510&label=SIGNAL+VIEWS" alt="Profile views" />
-</p>
-
-<!-- Replace this placeholder with your own licensed banner, GIF, or generated cyberpunk/HUD visual. -->
-<p align="center">
-  <img width="100%" src="https://placehold.co/1200x360/050510/00F5FF/png?text=PLACEHOLDER:+Cyberpunk+HUD+Banner+or+GIF" alt="Placeholder for cyberpunk HUD banner" />
 </p>
 
 <p align="center">
@@ -42,6 +37,10 @@
 
 <!-- MAIN DOSSIER -->
 <h2 align="center">IDENTITY SCANNER</h2>
+
+<p align="center">
+  <img width="100%" src="./assets/maxwell-operator-card.svg" alt="Animated Maxwell identity scanner card" />
+</p>
 
 <table align="center">
   <tr>
@@ -165,6 +164,10 @@
 <!-- FEATURED PROJECTS -->
 <h2 align="center">PROJECT FILES / SELECTED MISSIONS</h2>
 
+<p align="center">
+  <img width="100%" src="./assets/maxwell-project-reel.svg" alt="Animated Maxwell project mission board" />
+</p>
+
 <table align="center">
   <tr>
     <td width="50%">
@@ -213,12 +216,13 @@ IMPOSSIBLE IDEAS    [##############################] 100%
 
 <!-- ASSET SLOTS -->
 <details>
-  <summary><b>ASSET SLOTS / REPLACE LATER</b></summary>
+  <summary><b>ASSET SLOTS / EDIT LATER</b></summary>
   <br />
   <ul>
-    <li><code>[BANNER_SLOT]</code> Replace the placeholder banner with a cyberpunk city, terminal, rain, anime frame, or HUD image that you own or have permission to use.</li>
-    <li><code>[PROJECT_REEL_SLOT]</code> Add a GIF or image showing your projects, 3D work, edits, music visuals, or motion design.</li>
-    <li><code>[AVATAR_SLOT]</code> Add a Maxwell character render, profile image, or stylized creator card.</li>
+    <li><code>assets/maxwell-boot-banner.svg</code> controls the main animated boot banner.</li>
+    <li><code>assets/maxwell-operator-card.svg</code> controls the animated identity scanner panel.</li>
+    <li><code>assets/maxwell-project-reel.svg</code> controls the animated project board.</li>
+    <li><code>[AVATAR_SLOT]</code> Add a Maxwell character render, profile image, or stylized creator card later if you want.</li>
   </ul>
 </details>
 
