@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Maxwell operator scanner card</title>
+  <desc id="desc">Animated HUD dossier card for Maxwell profile README.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#050510" />
+      <stop offset="50%" stop-color="#070A12" />
+      <stop offset="100%" stop-color="#120A2D" />
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00F5FF" />
+      <stop offset="45%" stop-color="#FF2ED1" />
+      <stop offset="100%" stop-color="#FCEE09" />
+    </linearGradient>
+    <pattern id="microGrid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M28 0H0V28" fill="none" stroke="#00F5FF" stroke-opacity="0.10" stroke-width="1" />
+    </pattern>
+    <filter id="cyanGlow" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <style><![CDATA[
+      .mono { font-family: Consolas, Monaco, 'Courier New', monospace; }
+      .title { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; letter-spacing: 3px; }
+      .pulse { animation: pulse 2.8s ease-in-out infinite; }
+      .blink { animation: blink 1.15s steps(2, end) infinite; }
+      .dash { stroke-dasharray: 18 10; animation: dash 12s linear infinite; }
+      .data { animation: data 4.6s ease-in-out infinite; }
+      .scan { animation: scan 4.8s linear infinite; }
+      .bar1 { transform-origin: 0 0; animation: bar1 4.2s ease-in-out infinite; }
+      .bar2 { transform-origin: 0 0; animation: bar2 3.8s ease-in-out infinite; }
+      .bar3 { transform-origin: 0 0; animation: bar3 5s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+      @keyframes blink { 0%,54% { opacity: 1; } 55%,100% { opacity: .18; } }
+      @keyframes dash { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -220; } }
+      @keyframes data { 0%,100% { transform: translateX(0); opacity: .45; } 50% { transform: translateX(18px); opacity: 1; } }
+      @keyframes scan { from { transform: translateY(-420px); } to { transform: translateY(420px); } }
+      @keyframes bar1 { 0% { transform: scaleX(.35); } 50% { transform: scaleX(.92); } 100% { transform: scaleX(.74); } }
+      @keyframes bar2 { 0% { transform: scaleX(.55); } 50% { transform: scaleX(.82); } 100% { transform: scaleX(.68); } }
+      @keyframes bar3 { 0% { transform: scaleX(.22); } 50% { transform: scaleX(.73); } 100% { transform: scaleX(.96); } }
+    ]]></style>
+  </defs>
+
+  <rect width="1200" height="520" rx="28" fill="url(#panel)" />
+  <rect x="18" y="18" width="1164" height="484" rx="22" fill="none" stroke="url(#edge)" stroke-width="2" />
+  <rect x="36" y="36" width="1128" height="448" rx="16" fill="url(#microGrid)" opacity="0.75" />
+  <rect class="scan" x="36" y="36" width="1128" height="70" fill="url(#edge)" opacity="0.08" />
+
+  <text class="title" x="72" y="94" fill="#EAF2FF" font-size="44">IDENTITY SCANNER</text>
+  <text class="mono" x="74" y="126" fill="#00F5FF" font-size="16">PROFILE: MAXWELL / CREATIVE SYSTEM ARCHITECT</text>
+  <text class="mono blink" x="74" y="152" fill="#FCEE09" font-size="14">ACCESS LEVEL: RISING // NORMAL FILTER: DISABLED</text>
+
+  <g transform="translate(98 205)">
+    <circle cx="155" cy="120" r="104" fill="#050510" stroke="#00F5FF" stroke-width="2" opacity="0.88" />
+    <circle cx="155" cy="120" r="78" fill="none" stroke="#FF2ED1" stroke-width="2" stroke-dasharray="18 12" filter="url(#cyanGlow)">
+      <animateTransform attributeName="transform" type="rotate" from="0 155 120" to="360 155 120" dur="8s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="155" cy="120" r="48" fill="none" stroke="#FCEE09" stroke-width="2" stroke-dasharray="8 10">
+      <animateTransform attributeName="transform" type="rotate" from="360 155 120" to="0 155 120" dur="6s" repeatCount="indefinite" />
+    </circle>
+    <path d="M155 50L198 204H112Z" fill="#00F5FF" opacity="0.10" />
+    <path d="M155 76L185 185H125Z" fill="#FF2ED1" opacity="0.15" />
+    <text class="title pulse" x="155" y="134" text-anchor="middle" fill="#EAF2FF" font-size="38">M</text>
+    <line x1="36" y1="120" x2="274" y2="120" stroke="#00F5FF" stroke-opacity="0.32" />
+    <line x1="155" y1="0" x2="155" y2="240" stroke="#FF2ED1" stroke-opacity="0.22" />
+    <text class="mono" x="155" y="260" text-anchor="middle" fill="#9BA7C0" font-size="13">NEURAL CREATIVE CORE</text>
+  </g>
+
+  <g transform="translate(455 190)">
+    <rect x="0" y="0" width="640" height="248" rx="16" fill="#050510" fill-opacity="0.78" stroke="#00F5FF" stroke-opacity="0.75" />
+    <g class="mono" font-size="18">
+      <text x="28" y="42" fill="#FCEE09">NAME</text>
+      <text x="245" y="42" fill="#EAF2FF">Maxwell</text>
+      <text x="28" y="78" fill="#FCEE09">CLASS</text>
+      <text x="245" y="78" fill="#EAF2FF">Developer / Visual Creator</text>
+      <text x="28" y="114" fill="#FCEE09">MISSION</text>
+      <text x="245" y="114" fill="#EAF2FF">Building a Geek Music Empire</text>
+      <text x="28" y="150" fill="#FCEE09">WEAPONS</text>
+      <text x="245" y="150" fill="#EAF2FF">Code / Motion / 3D / Music / Design</text>
+      <text x="28" y="186" fill="#FCEE09">STATUS</text>
+      <text x="245" y="186" fill="#00F5FF">Training Arc</text>
+      <text x="28" y="222" fill="#FCEE09">THREAT</text>
+      <text class="blink" x="245" y="222" fill="#FF003C">Rising</text>
+    </g>
+    <g transform="translate(500 28)">
+      <rect x="0" y="0" width="100" height="12" rx="6" fill="#26314F" />
+      <rect class="bar1" x="0" y="0" width="100" height="12" rx="6" fill="#00F5FF" />
+      <rect x="0" y="42" width="100" height="12" rx="6" fill="#26314F" />
+      <rect class="bar2" x="0" y="42" width="100" height="12" rx="6" fill="#FF2ED1" />
+      <rect x="0" y="84" width="100" height="12" rx="6" fill="#26314F" />
+      <rect class="bar3" x="0" y="84" width="100" height="12" rx="6" fill="#FCEE09" />
+    </g>
+  </g>
+
+  <g class="data mono" fill="#00F5FF" font-size="12" opacity="0.75">
+    <text x="826" y="70">0x4D415857454C4C</text>
+    <text x="850" y="92">CREATOR PROFILE DETECTED</text>
+    <text x="910" y="114">SIGNAL LOCKED</text>
+  </g>
+
+  <path class="dash" d="M48 472H420L450 490H750L780 472H1152" fill="none" stroke="url(#edge)" stroke-width="2" />
+</svg>
