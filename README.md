@@ -29,7 +29,7 @@
 
 ```ts
 const llew = {
-  github: "Lamarq7eYT",
+  github: "Llewxam",
   theme: "ink animation",
   role: "Full-Stack Developer",
   languages: [
@@ -40,7 +40,7 @@ const llew = {
     "C++",
     "C#",
     "Rust",
-    "PHP",
+    "PhP",
     "Lua",
     "Assembly",
   ],
