@@ -134,15 +134,15 @@
 
   <g transform="translate(57 88)">
     <g class="f01"><rect class="frame" x="0" y="0" width="60" height="40"/><text class="letter green" x="30" y="30" text-anchor="middle">L</text><text class="label" x="30" y="54" text-anchor="middle">001</text></g>
-    <g class="f02"><rect class="frame" x="75" y="0" width="60" height="40"/><text class="letter pink" x="105" y="30" text-anchor="middle">A</text><text class="label" x="105" y="54" text-anchor="middle">002</text></g>
-    <g class="f03"><rect class="frame" x="150" y="0" width="60" height="40"/><text class="letter black" x="180" y="30" text-anchor="middle">M</text><text class="label" x="180" y="54" text-anchor="middle">003</text></g>
-    <g class="f04"><rect class="frame" x="225" y="0" width="60" height="40"/><text class="letter cyan" x="255" y="30" text-anchor="middle">A</text><text class="label" x="255" y="54" text-anchor="middle">004</text></g>
-    <g class="f05"><rect class="frame" x="300" y="0" width="60" height="40"/><text class="letter green" x="330" y="30" text-anchor="middle">R</text><text class="label" x="330" y="54" text-anchor="middle">005</text></g>
-    <g class="f06"><rect class="frame" x="375" y="0" width="60" height="40"/><text class="letter black" x="405" y="30" text-anchor="middle">Q</text><text class="label" x="405" y="54" text-anchor="middle">006</text></g>
-    <g class="f07"><rect class="frame" x="450" y="0" width="60" height="40"/><text class="letter pink" x="480" y="30" text-anchor="middle">7</text><text class="label" x="480" y="54" text-anchor="middle">007</text></g>
-    <g class="f08"><rect class="frame" x="525" y="0" width="60" height="40"/><text class="letter cyan" x="555" y="30" text-anchor="middle">E</text><text class="label" x="555" y="54" text-anchor="middle">008</text></g>
-    <g class="f09"><rect class="frame" x="600" y="0" width="60" height="40"/><text class="letter black" x="630" y="30" text-anchor="middle">Y</text><text class="label" x="630" y="54" text-anchor="middle">009</text></g>
-    <g class="f10"><rect class="frame" x="675" y="0" width="60" height="40"/><text class="letter green" x="705" y="30" text-anchor="middle">T</text><text class="label" x="705" y="54" text-anchor="middle">010</text></g>
+    <g class="f02"><rect class="frame" x="75" y="0" width="60" height="40"/><text class="letter pink" x="105" y="30" text-anchor="middle">L</text><text class="label" x="105" y="54" text-anchor="middle">002</text></g>
+    <g class="f03"><rect class="frame" x="150" y="0" width="60" height="40"/><text class="letter black" x="180" y="30" text-anchor="middle">E</text><text class="label" x="180" y="54" text-anchor="middle">003</text></g>
+    <g class="f04"><rect class="frame" x="225" y="0" width="60" height="40"/><text class="letter cyan" x="255" y="30" text-anchor="middle">W</text><text class="label" x="255" y="54" text-anchor="middle">004</text></g>
+    <g class="f05"><rect class="frame" x="300" y="0" width="60" height="40"/><text class="letter green" x="330" y="30" text-anchor="middle">X</text><text class="label" x="330" y="54" text-anchor="middle">005</text></g>
+    <g class="f06"><rect class="frame" x="375" y="0" width="60" height="40"/><text class="letter black" x="405" y="30" text-anchor="middle">A</text><text class="label" x="405" y="54" text-anchor="middle">006</text></g>
+    <g class="f07"><rect class="frame" x="450" y="0" width="60" height="40"/><text class="letter pink" x="480" y="30" text-anchor="middle">M</text><text class="label" x="480" y="54" text-anchor="middle">007</text></g>
+    <g class="f08"><rect class="frame" x="525" y="0" width="60" height="40"/><text class="letter cyan" x="555" y="30" text-anchor="middle">D</text><text class="label" x="555" y="54" text-anchor="middle">008</text></g>
+    <g class="f09"><rect class="frame" x="600" y="0" width="60" height="40"/><text class="letter black" x="630" y="30" text-anchor="middle">E</text><text class="label" x="630" y="54" text-anchor="middle">009</text></g>
+    <g class="f10"><rect class="frame" x="675" y="0" width="60" height="40"/><text class="letter green" x="705" y="30" text-anchor="middle">V</text><text class="label" x="705" y="54" text-anchor="middle">010</text></g>
   </g>
 
   <path class="scratch" d="M72 184C118 173 166 196 212 183M244 190C310 170 356 197 412 181M456 185C520 171 580 195 636 180M684 188C724 177 768 188 812 178"/>
