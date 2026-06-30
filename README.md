@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="./glitch-header.svg" alt="Lamarq7eYT - Frame a Frame ink profile" width="860" />
+  <img src="./glitch-header.svg" alt="LlewxamDev - Frame a Frame ink profile" width="860" />
 </p>
 
 <p align="center">
-  <a href="https://github.com/Lamarq7eYT?tab=followers">
-    <img src="https://img.shields.io/github/followers/Lamarq7eYT?label=Followers&style=for-the-badge&color=ffffff&labelColor=000000&logo=github&logoColor=ffffff" alt="GitHub followers" />
+  <a href="https://github.com/LlewxamDev?tab=followers">
+    <img src="https://img.shields.io/github/followers/LlewxamDev?label=Followers&style=for-the-badge&color=ffffff&labelColor=000000&logo=github&logoColor=ffffff" alt="GitHub followers" />
   </a>
   <a href="https://github.com/LlewxamDev?tab=repositories">
     <img src="https://img.shields.io/badge/Theme-Frame%20a%20Frame-ffffff?style=for-the-badge&labelColor=000000" alt="Frame a Frame theme" />
