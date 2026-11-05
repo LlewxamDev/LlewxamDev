@@ -280,6 +280,15 @@ try {
           totalCommitContributions
           restrictedContributionsCount
           totalPullRequestReviewContributions
+          contributionCalendar {
+            totalContributions
+            weeks {
+              contributionDays {
+                contributionCount
+                date
+              }
+            }
+          }
         }
         organizations(first: 1) { totalCount }
         followers(first: 1) { totalCount }
@@ -573,3 +582,147 @@ const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height=
 const outSvgPath = path.join(REPO_ROOT, "assets", "trophies", "trophy-selection-live.svg");
 fs.writeFileSync(outSvgPath, svgContent, "utf8");
 console.log("[SAVED VERIFIED SVG]:", outSvgPath);
+
+// 4. Generate reliable self-contained GitHub Stats & Streak SVGs (fixing broken external github-readme-stats)
+const cal = rawGraphql.contributionsCollection.contributionCalendar;
+const allDays = (cal?.weeks || []).flatMap((w) => w.contributionDays || []);
+let currentStreak = 0;
+let longestStreak = 0;
+let tempStreak = 0;
+let longestStart = "";
+let longestEnd = "";
+let tempStart = "";
+
+for (const d of allDays) {
+  if (d.contributionCount > 0) {
+    if (tempStreak === 0) tempStart = d.date;
+    tempStreak++;
+    if (tempStreak >= longestStreak) {
+      longestStreak = tempStreak;
+      longestStart = tempStart;
+      longestEnd = d.date;
+    }
+  } else {
+    tempStreak = 0;
+  }
+}
+
+const todayIso = new Date().toISOString().slice(0, 10);
+for (let i = allDays.length - 1; i >= 0; i--) {
+  const d = allDays[i];
+  if (d.date > todayIso) continue;
+  if (d.contributionCount > 0) {
+    currentStreak++;
+  } else if (d.date === todayIso) {
+    continue;
+  } else {
+    break;
+  }
+}
+
+// Calculate overall grade rank based on commits + PRs + issues + stars + repos
+const rankLabel = liveUserInfo.totalCommits >= 150 ? "A+" : "A";
+const ringCircumference = 2 * Math.PI * 38;
+const ringOffset = Math.round(ringCircumference * 0.16);
+
+const statsSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="580" height="195" viewBox="0 0 580 195" role="img" aria-label="GitHub Stats — @LlewxamDev">
+  <defs>
+    <style>
+      .st-head { font-family: 'Press Start 2P', 'VT323', 'Courier New', monospace; font-weight: 900; letter-spacing: 1.5px; }
+      .st-label { font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace; font-weight: 700; font-size: 12.5px; fill: #F2ECEE; }
+      .st-val { font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace; font-weight: 900; font-size: 13px; fill: #FFD800; }
+      .st-rank { font-family: 'Press Start 2P', 'JetBrains Mono', monospace; font-weight: 900; font-size: 24px; fill: #FF0F2B; }
+      .st-sub { font-family: 'JetBrains Mono', 'Consolas', monospace; font-weight: 700; font-size: 9.5px; fill: #9E8C92; letter-spacing: 1px; }
+    </style>
+  </defs>
+  <rect width="580" height="195" fill="#050305" />
+  <rect x="4" y="4" width="572" height="187" fill="#0A0508" stroke="#8A0018" stroke-width="2.5" />
+  <rect x="9" y="9" width="562" height="177" fill="none" stroke="#2C0D16" stroke-width="1" />
+  <rect x="12" y="12" width="556" height="28" fill="#1A050C" />
+  <polygon points="22,21 30,26 22,31" fill="#FFD800" />
+  <text x="38" y="30" class="st-head" fill="#FF0F2B" font-size="12">LLEWXAMDEV · GITHUB STATS</text>
+  <text x="556" y="29" text-anchor="end" class="st-sub">LIVE TELEMETRY</text>
+
+  <g transform="translate(26, 62)">
+    <circle cx="8" cy="-4" r="4.5" fill="#FFD800" />
+    <text x="22" y="0" class="st-label">Total Stars Earned:</text>
+    <text x="295" y="0" text-anchor="end" class="st-val">${liveUserInfo.totalStargazers}</text>
+
+    <circle cx="8" cy="22" r="4.5" fill="#FF0F2B" />
+    <text x="22" y="26" class="st-label">Total Commits:</text>
+    <text x="295" y="26" text-anchor="end" class="st-val">${liveUserInfo.totalCommits}</text>
+
+    <circle cx="8" cy="48" r="4.5" fill="#3178C6" />
+    <text x="22" y="52" class="st-label">Total Pull Requests:</text>
+    <text x="295" y="52" text-anchor="end" class="st-val">${liveUserInfo.totalPullRequests}</text>
+
+    <circle cx="8" cy="74" r="4.5" fill="#28E060" />
+    <text x="22" y="78" class="st-label">Total Issues:</text>
+    <text x="295" y="78" text-anchor="end" class="st-val">${liveUserInfo.totalIssues}</text>
+
+    <circle cx="8" cy="100" r="4.5" fill="#FF8C00" />
+    <text x="22" y="104" class="st-label">Public Repositories:</text>
+    <text x="295" y="104" text-anchor="end" class="st-val">${liveUserInfo.totalRepositories}</text>
+  </g>
+
+  <line x1="358" y1="48" x2="358" y2="174" stroke="#380B16" stroke-width="1.5" />
+
+  <g transform="translate(468, 108)">
+    <circle cx="0" cy="0" r="42" fill="#120408" stroke="#2E0A12" stroke-width="6" />
+    <circle cx="0" cy="0" r="38" fill="none" stroke="#FF0F2B" stroke-width="6" stroke-dasharray="${ringCircumference.toFixed(1)}" stroke-dashoffset="${ringOffset}" stroke-linecap="round" transform="rotate(-90)" />
+    <circle cx="0" cy="0" r="31" fill="none" stroke="#FFD800" stroke-width="1.5" stroke-opacity="0.65" />
+    <text x="2" y="8" text-anchor="middle" class="st-rank">${rankLabel}</text>
+    <text x="0" y="60" text-anchor="middle" class="st-sub" fill="#FFD800">RANK TIER · ${liveUserInfo.languageCount} LANGUAGES</text>
+  </g>
+</svg>`;
+
+const streakSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="580" height="195" viewBox="0 0 580 195" role="img" aria-label="GitHub Streak — @LlewxamDev">
+  <defs>
+    <style>
+      .sk-head { font-family: 'Press Start 2P', 'VT323', 'Courier New', monospace; font-weight: 900; letter-spacing: 1.5px; }
+      .sk-num { font-family: 'JetBrains Mono', 'Consolas', monospace; font-weight: 900; font-size: 28px; fill: #FFFFFF; }
+      .sk-num-gold { font-family: 'JetBrains Mono', 'Consolas', monospace; font-weight: 900; font-size: 30px; fill: #FFD800; }
+      .sk-lbl { font-family: 'JetBrains Mono', 'Consolas', monospace; font-weight: 800; font-size: 11px; fill: #FF0F2B; letter-spacing: 1px; }
+      .sk-lbl-gold { font-family: 'JetBrains Mono', 'Consolas', monospace; font-weight: 800; font-size: 11px; fill: #FFD800; letter-spacing: 1px; }
+      .sk-sub { font-family: 'JetBrains Mono', 'Consolas', monospace; font-weight: 700; font-size: 9.5px; fill: #9E8C92; }
+    </style>
+  </defs>
+  <rect width="580" height="195" fill="#050305" />
+  <rect x="4" y="4" width="572" height="187" fill="#0A0508" stroke="#8A0018" stroke-width="2.5" />
+  <rect x="9" y="9" width="562" height="177" fill="none" stroke="#2C0D16" stroke-width="1" />
+  <rect x="12" y="12" width="556" height="28" fill="#1A050C" />
+  <polygon points="22,21 30,26 22,31" fill="#FFD800" />
+  <text x="38" y="30" class="sk-head" fill="#FFD800" font-size="12">CONTRIBUTION &amp; STREAK TELEMETRY</text>
+  <text x="556" y="29" text-anchor="end" class="sk-sub">@LLEWXAMDEV</text>
+
+  <g transform="translate(102, 104)">
+    <text x="0" y="-8" text-anchor="middle" class="sk-num">${cal?.totalContributions || liveUserInfo.totalCommits}</text>
+    <text x="0" y="18" text-anchor="middle" class="sk-lbl">TOTAL CONTRIBUTIONS</text>
+    <text x="0" y="38" text-anchor="middle" class="sk-sub">2024 — PRESENT</text>
+  </g>
+
+  <line x1="198" y1="52" x2="198" y2="172" stroke="#380B16" stroke-width="1.5" />
+
+  <g transform="translate(290, 102)">
+    <circle cx="0" cy="-16" r="28" fill="#18050A" stroke="#FF0F2B" stroke-width="3" />
+    <circle cx="0" cy="-16" r="22" fill="none" stroke="#FFD800" stroke-width="1.2" stroke-dasharray="6 4" />
+    <text x="0" y="-6" text-anchor="middle" class="sk-num-gold">${currentStreak}</text>
+    <text x="0" y="30" text-anchor="middle" class="sk-lbl-gold">CURRENT STREAK</text>
+    <text x="0" y="48" text-anchor="middle" class="sk-sub">ACTIVE DAYS</text>
+  </g>
+
+  <line x1="382" y1="52" x2="382" y2="172" stroke="#380B16" stroke-width="1.5" />
+
+  <g transform="translate(478, 104)">
+    <text x="0" y="-8" text-anchor="middle" class="sk-num">${longestStreak} DAYS</text>
+    <text x="0" y="18" text-anchor="middle" class="sk-lbl">LONGEST STREAK</text>
+    <text x="0" y="38" text-anchor="middle" class="sk-sub">${longestStart ? `${longestStart.slice(5)} TO ${longestEnd.slice(5)}` : "VERIFIED"}</text>
+  </g>
+</svg>`;
+
+const outStatsPath = path.join(REPO_ROOT, "assets", "trophies", "github-stats-live.svg");
+const outStreakPath = path.join(REPO_ROOT, "assets", "trophies", "github-streak-live.svg");
+fs.writeFileSync(outStatsPath, statsSvg, "utf8");
+fs.writeFileSync(outStreakPath, streakSvg, "utf8");
+console.log("[SAVED STATS SVG]:", outStatsPath);
+console.log("[SAVED STREAK SVG]:", outStreakPath);

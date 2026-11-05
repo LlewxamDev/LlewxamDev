@@ -134,7 +134,7 @@
 
         <text x="90" y="132" text-anchor="middle" class="px-title" fill="#FFFFFF" font-size="13">COMMITS</text>
         <text x="90" y="150" text-anchor="middle" class="px-sub" fill="#FFD800" font-size="10.5">Deep Committer</text>
-        <text x="90" y="168" text-anchor="middle" class="px-score" fill="#E8DFE2" font-size="10.5">1.1kpt · 1138 COMMITS</text>
+        <text x="90" y="168" text-anchor="middle" class="px-score" fill="#E8DFE2" font-size="10.5">1.1kpt · 1140 COMMITS</text>
 
         <rect x="14" y="180" width="152" height="8" fill="#180B10" stroke="#381620" stroke-width="1" />
         <rect x="14" y="180" width="21" height="8" fill="#FFD800" />

@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- ===================================================================== -->
-<!-- 01. HERO — NORMAL CLASSIC SONIC / 80ms CLASSIC SONIC.EXE              -->
+<!-- 01. HERO — NORMAL CLASSIC SONIC (6s) / CLASSIC SONIC.EXE (6s)         -->
 <!-- ===================================================================== -->
 <img src="./assets/hero/lwx-exe-hero.gif" width="100%" alt="OLHE MEU PERFIL." />
 
@@ -12,7 +12,7 @@
 <!-- ===================================================================== -->
 <!-- 02. IDENTITY — EVANDRO (@LLEWXAMDEV)                                  -->
 <!-- ===================================================================== -->
-<img src="./assets/identity/lwx-exe-identity.gif" width="100%" alt="Evandro — Full-Stack Developer & 2D/3D Animator" />
+<img src="./assets/identity/lwx-exe-identity.gif" width="100%" alt="Evandro — Full-Stack Developer & Motion Designer" />
 
 <br/>
 
@@ -27,7 +27,7 @@
   <tr>
     <td align="center" width="50%">
       <a href="https://www.llewxam.me">
-        <img src="./assets/projects/card-portfolio.gif" width="100%" alt="LLEWXAM.ME — Interactive 2.5D WebGL & Canvas Portfolio" />
+        <img src="./assets/projects/card-portfolio.png" width="100%" alt="LLEWXAM.ME — Interactive 2.5D WebGL & Canvas Portfolio" />
       </a>
       <br/>
       <a href="https://www.llewxam.me">
@@ -36,7 +36,7 @@
     </td>
     <td align="center" width="50%">
       <a href="https://github.com/LlewxamDev/AegisHub">
-        <img src="./assets/projects/card-aegishub.gif" width="100%" alt="AEGISHUB — GitHub Repository Security Analyzer" />
+        <img src="./assets/projects/card-aegishub.png" width="100%" alt="AEGISHUB — GitHub Repository Security Analyzer" />
       </a>
       <br/>
       <a href="https://github.com/LlewxamDev/AegisHub">
@@ -47,7 +47,7 @@
   <tr>
     <td align="center" width="50%">
       <a href="https://github.com/LlewxamDev/AegisCore">
-        <img src="./assets/projects/card-aegiscore.gif" width="100%" alt="AEGISCORE — Hybrid Web-Defense & Risk Scoring Platform" />
+        <img src="./assets/projects/card-aegiscore.png" width="100%" alt="AEGISCORE — Hybrid Web-Defense & Risk Scoring Platform" />
       </a>
       <br/>
       <a href="https://github.com/LlewxamDev/AegisCore">
@@ -56,7 +56,7 @@
     </td>
     <td align="center" width="50%">
       <a href="https://github.com/LlewxamDev/HackerPage">
-        <img src="./assets/projects/card-hackerpage.gif" width="100%" alt="HACKERPAGE — BreachRoom 3D Cybersecurity Experience" />
+        <img src="./assets/projects/card-hackerpage.png" width="100%" alt="HACKERPAGE — BreachRoom 3D Cybersecurity Experience" />
       </a>
       <br/>
       <a href="https://github.com/LlewxamDev/HackerPage">
@@ -67,7 +67,7 @@
   <tr>
     <td align="center" width="50%">
       <a href="https://github.com/LlewxamDev/Soul-List">
-        <img src="./assets/projects/card-soullist.gif" width="100%" alt="SOUL-LIST — 1,400+ Command High-Speed WhatsApp Bot" />
+        <img src="./assets/projects/card-soullist.png" width="100%" alt="SOUL-LIST — 1,400+ Command High-Speed WhatsApp Bot" />
       </a>
       <br/>
       <a href="https://github.com/LlewxamDev/Soul-List">
@@ -76,7 +76,7 @@
     </td>
     <td align="center" width="50%">
       <a href="https://github.com/LlewxamDev/Polybech">
-        <img src="./assets/projects/card-polybech.gif" width="100%" alt="POLYBECH — Polyglot Algorithm Benchmark Laboratory" />
+        <img src="./assets/projects/card-polybech.png" width="100%" alt="POLYBECH — Polyglot Algorithm Benchmark Laboratory" />
       </a>
       <br/>
       <a href="https://github.com/LlewxamDev/Polybech">
@@ -115,10 +115,16 @@
 
 <br/><br/>
 
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=LlewxamDev&show_icons=true&bg_color=060408&title_color=FF122E&text_color=ECE6EA&icon_color=FFD800&border_color=6E0818&hide_border=false" height="175" alt="GitHub Stats" />
-  <img src="https://streak-stats.demolab.com?user=LlewxamDev&background=060408&border=6E0818&stroke=3A0610&ring=FFD800&fire=FF122E&currStreakNum=FFFFFF&sideNums=ECE6EA&currStreakLabel=FFD800&sideLabels=9E8C96&dates=786870" height="175" alt="GitHub Streak" />
-</p>
+<table align="center" width="100%">
+  <tr>
+    <td align="center" width="50%">
+      <img src="./assets/trophies/github-stats-live.svg" width="100%" alt="GitHub Stats — @LlewxamDev" />
+    </td>
+    <td align="center" width="50%">
+      <img src="./assets/trophies/github-streak-live.svg" width="100%" alt="GitHub Streak — @LlewxamDev" />
+    </td>
+  </tr>
+</table>
 
 <br/>
 

@@ -107,10 +107,13 @@ def draw_pixel_text(
     outline=None,
     letter_spacing: int = 1,
     align: str = "left",
+    h_scale: int | None = None,
 ):
     text = text.upper()
-    char_w = 5 * scale
-    space_w = letter_spacing * scale
+    sx = h_scale if h_scale is not None else scale
+    sy = scale
+    char_w = 5 * sx
+    space_w = letter_spacing * sx
     total_w = len(text) * char_w + max(0, len(text) - 1) * space_w
     if align == "center":
         x = x - total_w // 2
@@ -124,25 +127,25 @@ def draw_pixel_text(
             for r_idx, row in enumerate(grid):
                 for c_idx, bit in enumerate(row):
                     if bit == "1":
-                        px = cur_x + c_idx * scale
-                        py = y + r_idx * scale
+                        px = cur_x + c_idx * sx
+                        py = y + r_idx * sy
                         draw.rectangle(
-                            [px - scale, py - scale, px + 2 * scale - 1, py + 2 * scale - 1],
+                            [px - sx, py - sy, px + 2 * sx - 1, py + 2 * sy - 1],
                             fill=outline,
                         )
         if shadow:
             for r_idx, row in enumerate(grid):
                 for c_idx, bit in enumerate(row):
                     if bit == "1":
-                        px = cur_x + c_idx * scale + scale
-                        py = y + r_idx * scale + scale
-                        draw.rectangle([px, py, px + scale - 1, py + scale - 1], fill=shadow)
+                        px = cur_x + c_idx * sx + sx
+                        py = y + r_idx * sy + sy
+                        draw.rectangle([px, py, px + sx - 1, py + sy - 1], fill=shadow)
         for r_idx, row in enumerate(grid):
             for c_idx, bit in enumerate(row):
                 if bit == "1":
-                    px = cur_x + c_idx * scale
-                    py = y + r_idx * scale
-                    draw.rectangle([px, py, px + scale - 1, py + scale - 1], fill=fill)
+                    px = cur_x + c_idx * sx
+                    py = y + r_idx * sy
+                    draw.rectangle([px, py, px + sx - 1, py + sy - 1], fill=fill)
         cur_x += char_w + space_w
     return total_w
 
@@ -199,8 +202,95 @@ def extract_clean_sonic_portrait(filename: str) -> Image.Image:
     return crop.copy()
 
 
+def build_sonic_blink_portraits() -> dict[str, Image.Image]:
+    """
+    Cuts the actual pixel-art blue upper eyelids from sprSWSonic_EvilSmile_0.png and
+    sprSWExetior_Normal_0.png and composites/warps them onto sprSWSonic_Normal_0.png /
+    sprSWExetior_Grin_0.png so Sonic closes and opens his eyes smoothly without flat rectangles.
+    """
+    cache_key = "sonic_blink_portraits_v2"
+    if cache_key in _SPRITE_CACHE:
+        return _SPRITE_CACHE[cache_key]
+
+    p_norm = extract_clean_sonic_portrait("sprSWSonic_Normal_0.png")
+    p_evil = extract_clean_sonic_portrait("sprSWSonic_EvilSmile_0.png")
+    p_exe_norm = extract_clean_sonic_portrait("sprSWExetior_Normal_0.png")
+    p_exe_grin = extract_clean_sonic_portrait("sprSWExetior_Grin_0.png")
+
+    # 1. Half-blink: cut upper eyelid pixels from sprSWSonic_EvilSmile_0.png onto sprSWSonic_Normal_0.png
+    p_half = p_norm.copy()
+    px_half = p_half.load()
+    px_evil = p_evil.load()
+    for y in range(28, 50):
+        for x in range(13, 60):
+            if px_evil[x, y][3] > 0:
+                px_half[x, y] = px_evil[x, y]
+
+    # 2. Fully closed eyes: stretch the cut blue upper eyelid vertically down to the lower eye boundary
+    p_closed = p_norm.copy()
+    px_closed = p_closed.load()
+    px_norm = p_norm.load()
+    for x in range(12, 59):
+        lid_col = []
+        for y in range(26, 49):
+            r, g, b, a = px_evil[x, y]
+            if a > 0 and b > r + 20:
+                lid_col.append((y, (r, g, b, a)))
+        if not lid_col:
+            continue
+        y_top = lid_col[0][0]
+        y_open_bot = None
+        for y in range(56, 36, -1):
+            r, g, b, a = px_norm[x, y]
+            if a > 0 and (
+                (r > 180 and g > 180 and b > 180)
+                or (r < 50 and g < 50 and b < 55 and y < 55)
+                or (g > r + 25 and y < 56)
+            ):
+                y_open_bot = y
+                break
+        if y_open_bot is None or y_open_bot <= y_top:
+            continue
+        span = y_open_bot - y_top + 1
+        for dy in range(span):
+            src_idx = min(len(lid_col) - 1, int(dy * len(lid_col) / max(1, span)))
+            px_closed[x, y_top + dy] = lid_col[src_idx][1]
+        px_closed[x, y_open_bot] = (10, 20, 56, 255)
+        if y_open_bot - 1 >= y_top:
+            px_closed[x, y_open_bot - 1] = (24, 52, 128, 255)
+
+    # 3. EXE half-open blink: cut dark eyelids from sprSWExetior_Normal_0.png onto sprSWExetior_Grin_0.png
+    p_exe_full = p_exe_grin.copy()
+    pd_exe = ImageDraw.Draw(p_exe_full)
+    pd_exe.rectangle([25, 48, 27, 50], fill=(255, 24, 52, 255))
+    pd_exe.rectangle([46, 47, 48, 49], fill=(255, 24, 52, 255))
+    pd_exe.rectangle([25, 55, 27, 63], fill=(148, 0, 22, 220))
+    pd_exe.rectangle([46, 54, 48, 62], fill=(148, 0, 22, 220))
+
+    p_exe_half = p_exe_full.copy()
+    px_exe_half = p_exe_half.load()
+    px_exe_n = p_exe_norm.load()
+    for y in range(28, 48):
+        for x in range(13, 60):
+            r, g, b, a = px_exe_n[x, y]
+            if a > 0 and b > r + 10:
+                if y + 3 < 76:
+                    px_exe_half[x, y + 3] = (r, g, b, a)
+                px_exe_half[x, y] = (r, g, b, a)
+
+    res = {
+        "normal": p_norm,
+        "blink_half": p_half,
+        "blink_closed": p_closed,
+        "exe_blink_half": p_exe_half,
+        "exe_full": p_exe_full,
+    }
+    _SPRITE_CACHE[cache_key] = res
+    return res
+
+
 def render_sonic_character_canvas(
-    mode: str = "normal",  # "normal", "blink", "glance", "exe_eye_micro", "exe_full"
+    mode: str = "normal",  # "normal", "blink_half", "blink_closed", "exe_blink_half", "exe_full"
     breath_offset: int = 0,
     wag_phase: int = 0,
     upscale: int = 4,
@@ -215,20 +305,19 @@ def render_sonic_character_canvas(
     canvas = Image.new("RGBA", (target_w, target_h), (0, 0, 0, 0))
     draw = ImageDraw.Draw(canvas)
 
-    is_exe = mode == "exe_full"
-    is_micro = mode == "exe_eye_micro"
+    is_exe = mode in ("exe_full", "exe_blink_half")
     by = breath_offset * (upscale // 2)
 
     if style == "fullbody":
         # Full-body authentic Classic Sonic / Sonic.EXE standing sprite for COMP_02_IDENTITY
-        if mode in ("normal", "blink"):
+        if mode in ("normal", "blink_half"):
             full_spr = load_web_sprite("sprGU_SonicSmile_0.png") if wag_phase == 0 else load_web_sprite("sprSonicStand_0.png")
-        elif mode == "glance":
+        elif mode == "blink_closed":
             full_spr = load_web_sprite("sprSonicStandCrazy_0.png")
-        elif mode == "exe_eye_micro":
+        elif mode == "exe_blink_half":
             full_spr = load_web_sprite("sprExetior_StandSmile_0.png")
         else:
-            full_spr = load_web_sprite("sprExetiorWinPose_0.png")
+            full_spr = load_web_sprite("sprExetior_StandSmile_0.png") if wag_phase == 0 else load_web_sprite("sprExetiorWinPose_0.png")
 
         fb_scale = max(1, int(round(upscale * 1.65)))
         fb_resized = full_spr.resize((full_spr.width * fb_scale, full_spr.height * fb_scale), Image.Resampling.NEAREST)
@@ -237,14 +326,14 @@ def render_sonic_character_canvas(
         canvas.paste(fb_resized, (fb_x, fb_y), fb_resized)
 
         # Floating authentic spinning Golden/Blood Ring beside Sonic
-        ring_sp = render_ring_sprite(size=18 * upscale, phase=(wag_phase * 0.25), corrupted=(is_exe or is_micro))
+        ring_sp = render_ring_sprite(size=18 * upscale, phase=(wag_phase * 0.25), corrupted=is_exe)
         canvas.alpha_composite(ring_sp, (fb_x + fb_resized.width + 2 * upscale, fb_y + 10 * upscale - by))
         return canvas
 
     # --- Default style == "emblem": Iconic Sonic Golden Ring Emblem with High-Res Authentic Portrait ---
     ring_box = [10 * upscale, 8 * upscale, 78 * upscale, 76 * upscale]
     ring_inner = [18 * upscale, 16 * upscale, 70 * upscale, 68 * upscale]
-    if not is_exe and not is_micro:
+    if not is_exe:
         draw.ellipse([ring_box[0] + 4, ring_box[1] + 4, ring_box[2] + 4, ring_box[3] + 4], fill=(4, 2, 6, 195))
         draw.ellipse(ring_box, fill=(255, 208, 0, 255), outline=(148, 76, 0, 255), width=max(2, upscale // 2))
         draw.ellipse(
@@ -263,25 +352,8 @@ def render_sonic_character_canvas(
         )
         draw.ellipse(ring_inner, fill=(10, 2, 6, 255), outline=(48, 0, 8, 255), width=max(2, upscale // 2))
 
-    if mode in ("normal", "blink"):
-        portrait = extract_clean_sonic_portrait("sprSWSonic_Normal_0.png")
-        if mode == "blink":
-            pd = ImageDraw.Draw(portrait)
-            pd.rectangle([20, 39, 35, 56], fill=(238, 189, 139, 255))
-            pd.rectangle([42, 37, 56, 55], fill=(238, 189, 139, 255))
-            pd.line([(20, 49), (35, 49)], fill=(18, 18, 26, 255), width=2)
-            pd.line([(42, 48), (56, 48)], fill=(18, 18, 26, 255), width=2)
-    elif mode == "glance":
-        portrait = extract_clean_sonic_portrait("sprSWSonic_EvilSmile_0.png")
-    elif mode == "exe_eye_micro":
-        portrait = extract_clean_sonic_portrait("sprSWExetior_Normal_0.png")
-    else:
-        portrait = extract_clean_sonic_portrait("sprSWExetior_Grin_0.png")
-        pd = ImageDraw.Draw(portrait)
-        pd.rectangle([25, 48, 27, 50], fill=(255, 24, 52, 255))
-        pd.rectangle([46, 47, 48, 49], fill=(255, 24, 52, 255))
-        pd.rectangle([25, 55, 27, 63], fill=(148, 0, 22, 220))
-        pd.rectangle([46, 54, 48, 62], fill=(148, 0, 22, 220))
+    portraits = build_sonic_blink_portraits()
+    portrait = portraits.get(mode, portraits["normal"]).copy()
 
     p_scale = max(1, int(round(upscale * 0.76)))
     p_resized = portrait.resize((portrait.width * p_scale, portrait.height * p_scale), Image.Resampling.NEAREST)
@@ -448,98 +520,145 @@ def render_ring_sprite(size=44, phase=0.0, corrupted=False, scatter=0.0) -> Imag
 
 
 # ============================================================================
-# 5. SONIC 16-BIT ITEM MONITOR BOXES & TECHNOLOGY LOGOS
+# 5. SONIC 16-BIT ITEM MONITOR BOXES & OFFICIAL HIGH-RES TECHNOLOGY LOGOS
 # ============================================================================
+TECH_LOGOS_DIR = os.path.join(SRC_DIR, "tech_logos")
+_TECH_LOGO_CACHE: dict[str, Image.Image] = {}
+
 TECH_SPECS = {
     # Languages (11)
-    "PYTHON": {"bg": (34, 78, 122), "fg": (255, 212, 59), "accent": (55, 118, 171), "code": "PY"},
-    "JAVASCRIPT": {"bg": (247, 223, 30), "fg": (18, 18, 22), "accent": (196, 172, 0), "code": "JS"},
-    "TYPESCRIPT": {"bg": (49, 120, 198), "fg": (255, 255, 255), "accent": (88, 164, 248), "code": "TS"},
-    "PHP": {"bg": (119, 123, 180), "fg": (255, 255, 255), "accent": (79, 91, 147), "code": "PHP"},
-    "LUA": {"bg": (0, 0, 128), "fg": (255, 255, 255), "accent": (82, 132, 255), "code": "LUA"},
-    "JAVA": {"bg": (38, 78, 112), "fg": (248, 152, 32), "accent": (83, 130, 161), "code": "JV"},
-    "C++": {"bg": (0, 89, 156), "fg": (255, 255, 255), "accent": (101, 154, 210), "code": "C++"},
-    "C#": {"bg": (104, 33, 122), "fg": (255, 255, 255), "accent": (155, 79, 150), "code": "C#"},
-    "RUST": {"bg": (46, 26, 18), "fg": (247, 76, 0), "accent": (255, 142, 82), "code": "RS"},
-    "KOTLIN": {"bg": (127, 82, 255), "fg": (255, 255, 255), "accent": (248, 137, 9), "code": "KT"},
-    "ASSEMBLY": {"bg": (72, 78, 88), "fg": (0, 255, 168), "accent": (150, 160, 175), "code": "ASM"},
+    "PYTHON": {"bg": (20, 38, 62), "fg": (255, 212, 59), "accent": (55, 118, 171), "logo": "python.png"},
+    "JAVASCRIPT": {"bg": (36, 32, 12), "fg": (247, 223, 30), "accent": (247, 223, 30), "logo": "javascript.png"},
+    "TYPESCRIPT": {"bg": (18, 42, 74), "fg": (255, 255, 255), "accent": (49, 120, 198), "logo": "typescript.png"},
+    "PHP": {"bg": (52, 56, 92), "fg": (255, 255, 255), "accent": (119, 123, 180), "logo": "php.png"},
+    "LUA": {"bg": (14, 18, 58), "fg": (255, 255, 255), "accent": (82, 132, 255), "logo": "lua.png"},
+    "JAVA": {"bg": (232, 238, 246), "fg": (248, 152, 32), "accent": (248, 152, 32), "logo": "java.png"},
+    "C++": {"bg": (14, 36, 68), "fg": (255, 255, 255), "accent": (101, 154, 210), "logo": "cpp.png"},
+    "C#": {"bg": (42, 18, 56), "fg": (255, 255, 255), "accent": (155, 79, 150), "logo": "csharp.png"},
+    "RUST": {"bg": (36, 22, 16), "fg": (247, 76, 0), "accent": (255, 142, 82), "logo": "rust.png"},
+    "KOTLIN": {"bg": (34, 20, 68), "fg": (255, 255, 255), "accent": (127, 82, 255), "logo": "kotlin.png"},
+    "ASSEMBLY": {"bg": (22, 28, 38), "fg": (0, 255, 168), "accent": (0, 212, 255), "logo": "assembly.png"},
     # Ecosystem (13)
-    "NODE.JS": {"bg": (42, 112, 42), "fg": (255, 255, 255), "accent": (104, 160, 99), "code": "ND"},
-    "REACT": {"bg": (16, 44, 62), "fg": (97, 218, 251), "accent": (97, 218, 251), "code": "RC"},
-    "NEXT.JS": {"bg": (20, 20, 26), "fg": (255, 255, 255), "accent": (168, 168, 180), "code": "NX"},
-    "VUE": {"bg": (53, 73, 94), "fg": (65, 184, 131), "accent": (65, 184, 131), "code": "VU"},
-    "NUXT": {"bg": (18, 52, 42), "fg": (0, 220, 130), "accent": (0, 220, 130), "code": "UX"},
-    "ANGULAR": {"bg": (182, 0, 42), "fg": (255, 255, 255), "accent": (255, 68, 102), "code": "NG"},
-    "SVELTE": {"bg": (188, 46, 0), "fg": (255, 255, 255), "accent": (255, 110, 64), "code": "SV"},
-    "ASTRO": {"bg": (34, 18, 58), "fg": (255, 93, 1), "accent": (255, 255, 255), "code": "AS"},
-    "EXPRESS": {"bg": (36, 36, 42), "fg": (245, 245, 250), "accent": (140, 140, 156), "code": "EX"},
-    "NESTJS": {"bg": (176, 20, 62), "fg": (255, 255, 255), "accent": (224, 35, 78), "code": "NS"},
-    "VITE": {"bg": (78, 58, 188), "fg": (255, 214, 46), "accent": (100, 108, 255), "code": "VT"},
-    "TAILWIND": {"bg": (12, 68, 88), "fg": (56, 189, 248), "accent": (6, 182, 212), "code": "TW"},
-    "FASTIFY": {"bg": (28, 28, 34), "fg": (255, 255, 255), "accent": (255, 204, 0), "code": "FY"},
+    "NODE.JS": {"bg": (18, 44, 22), "fg": (255, 255, 255), "accent": (104, 160, 99), "logo": "nodejs.png"},
+    "REACT": {"bg": (14, 34, 48), "fg": (97, 218, 251), "accent": (97, 218, 251), "logo": "react.png"},
+    "NEXT.JS": {"bg": (20, 22, 30), "fg": (255, 255, 255), "accent": (200, 200, 215), "logo": "nextjs.png"},
+    "VUE": {"bg": (18, 42, 34), "fg": (65, 184, 131), "accent": (65, 184, 131), "logo": "vue.png"},
+    "NUXT": {"bg": (16, 44, 34), "fg": (0, 220, 130), "accent": (0, 220, 130), "logo": "nuxt.png"},
+    "ANGULAR": {"bg": (52, 12, 24), "fg": (255, 255, 255), "accent": (255, 68, 102), "logo": "angular.png"},
+    "SVELTE": {"bg": (54, 20, 12), "fg": (255, 255, 255), "accent": (255, 110, 64), "logo": "svelte.png"},
+    "ASTRO": {"bg": (28, 16, 48), "fg": (255, 93, 1), "accent": (255, 120, 40), "logo": "astro.png"},
+    "EXPRESS": {"bg": (26, 28, 36), "fg": (245, 245, 250), "accent": (180, 180, 196), "logo": "express.png"},
+    "NESTJS": {"bg": (52, 12, 26), "fg": (255, 255, 255), "accent": (224, 35, 78), "logo": "nestjs.png"},
+    "VITE": {"bg": (32, 24, 68), "fg": (255, 214, 46), "accent": (148, 108, 255), "logo": "vite.png"},
+    "TAILWIND": {"bg": (12, 42, 58), "fg": (56, 189, 248), "accent": (56, 189, 248), "logo": "tailwind.png"},
+    "FASTIFY": {"bg": (24, 26, 34), "fg": (255, 255, 255), "accent": (255, 204, 0), "logo": "fastify.png"},
     # Web / Data / Tools / Creative (15)
-    "HTML5": {"bg": (196, 58, 24), "fg": (255, 255, 255), "accent": (227, 79, 38), "code": "H5"},
-    "CSS3": {"bg": (21, 114, 182), "fg": (255, 255, 255), "accent": (51, 169, 220), "code": "C3"},
-    "POSTGRES": {"bg": (51, 103, 145), "fg": (255, 255, 255), "accent": (108, 168, 216), "code": "PG"},
-    "MYSQL": {"bg": (0, 96, 122), "fg": (242, 145, 17), "accent": (0, 117, 143), "code": "MY"},
-    "SQL SERVER": {"bg": (168, 28, 28), "fg": (255, 255, 255), "accent": (232, 72, 72), "code": "MS"},
-    "DOCKER": {"bg": (18, 98, 168), "fg": (255, 255, 255), "accent": (36, 150, 237), "code": "DK"},
-    "GIT": {"bg": (196, 52, 28), "fg": (255, 255, 255), "accent": (240, 80, 50), "code": "GT"},
-    "GITHUB": {"bg": (28, 32, 38), "fg": (255, 255, 255), "accent": (148, 160, 178), "code": "GH"},
-    "LINUX": {"bg": (38, 38, 44), "fg": (242, 201, 76), "accent": (255, 255, 255), "code": "LX"},
-    "VS CODE": {"bg": (0, 98, 168), "fg": (255, 255, 255), "accent": (35, 168, 242), "code": "VC"},
-    "VISUAL STUDIO": {"bg": (92, 45, 145), "fg": (255, 255, 255), "accent": (158, 104, 224), "code": "VS"},
-    "BLENDER": {"bg": (198, 88, 18), "fg": (255, 255, 255), "accent": (63, 125, 170), "code": "BL"},
-    "AFTER EFFECTS": {"bg": (12, 12, 92), "fg": (153, 153, 255), "accent": (153, 153, 255), "code": "AE"},
-    "PHOTOSHOP": {"bg": (0, 30, 54), "fg": (49, 168, 255), "accent": (49, 168, 255), "code": "PS"},
-    "HOUDINI": {"bg": (198, 52, 12), "fg": (255, 255, 255), "accent": (255, 142, 68), "code": "HD"},
+    "HTML5": {"bg": (54, 22, 14), "fg": (255, 255, 255), "accent": (227, 79, 38), "logo": "html5.png"},
+    "CSS3": {"bg": (14, 38, 64), "fg": (255, 255, 255), "accent": (51, 169, 220), "logo": "css3.png"},
+    "POSTGRES": {"bg": (18, 38, 58), "fg": (255, 255, 255), "accent": (108, 168, 216), "logo": "postgres.png"},
+    "MYSQL": {"bg": (232, 240, 248), "fg": (242, 145, 17), "accent": (0, 145, 178), "logo": "mysql.png"},
+    "SQL SERVER": {"bg": (244, 238, 240), "fg": (255, 255, 255), "accent": (232, 72, 72), "logo": "sql_server.png"},
+    "DOCKER": {"bg": (14, 38, 64), "fg": (255, 255, 255), "accent": (36, 150, 237), "logo": "docker.png"},
+    "GIT": {"bg": (54, 20, 14), "fg": (255, 255, 255), "accent": (240, 80, 50), "logo": "git.png"},
+    "GITHUB": {"bg": (24, 28, 36), "fg": (255, 255, 255), "accent": (168, 180, 198), "logo": "github.png"},
+    "LINUX": {"bg": (32, 32, 40), "fg": (242, 201, 76), "accent": (242, 201, 76), "logo": "linux.png"},
+    "VS CODE": {"bg": (12, 38, 68), "fg": (255, 255, 255), "accent": (35, 168, 242), "logo": "vs_code.png"},
+    "VISUAL STUDIO": {"bg": (38, 20, 62), "fg": (255, 255, 255), "accent": (158, 104, 224), "logo": "visual_studio.png"},
+    "BLENDER": {"bg": (54, 28, 12), "fg": (255, 255, 255), "accent": (245, 130, 32), "logo": "blender.png"},
+    "AFTER EFFECTS": {"bg": (16, 16, 58), "fg": (153, 153, 255), "accent": (153, 153, 255), "logo": "after_effects.png"},
+    "PHOTOSHOP": {"bg": (10, 32, 58), "fg": (49, 168, 255), "accent": (49, 168, 255), "logo": "photoshop.png"},
+    "HOUDINI": {"bg": (54, 22, 10), "fg": (255, 255, 255), "accent": (255, 102, 26), "logo": "houdini.png"},
 }
 
 
-def draw_tech_emblem_icon(draw: ImageDraw.ImageDraw, x: int, y: int, size: int, name: str, corrupted=False):
-    spec = TECH_SPECS.get(name, {"bg": (40, 40, 52), "fg": (255, 255, 255), "accent": (255, 15, 43), "code": "TX"})
-    bg = spec["bg"] if not corrupted else (max(12, spec["bg"][0] // 2), 6, 12)
-    fg = spec["fg"] if not corrupted else (255, 48, 72)
-    acc = spec["accent"] if not corrupted else (178, 0, 28)
+def load_official_tech_logo(logo_filename: str, target_size: int) -> Image.Image | None:
+    key = f"{logo_filename}::{target_size}"
+    if key in _TECH_LOGO_CACHE:
+        return _TECH_LOGO_CACHE[key].copy()
+    path = os.path.join(TECH_LOGOS_DIR, logo_filename)
+    if not os.path.exists(path):
+        return None
+    im = Image.open(path).convert("RGBA")
+    resized = im.resize((target_size, target_size), Image.Resampling.LANCZOS)
+    _TECH_LOGO_CACHE[key] = resized
+    return resized.copy()
+
+
+def draw_condensed_scale2_text(
+    draw: ImageDraw.ImageDraw,
+    x: int,
+    y: int,
+    text: str,
+    fill=(244, 240, 242, 255),
+    shadow=(0, 0, 0, 255),
+):
+    """
+    Draws 14px-tall (scale=2 vertical) pixel text with slightly tighter horizontal column widths
+    ([2, 2, 1, 2, 2] = 9px per char + 1px space = 10px pitch) so 13-char labels like
+    'AFTER EFFECTS' and 'VISUAL STUDIO' have the EXACT same 14px height as every other technology
+    while fitting cleanly inside their monitor box with generous right margin.
+    """
+    text = text.upper()
+    col_widths = [2, 2, 1, 2, 2]
+    col_offsets = [0, 2, 4, 5, 7]
+    char_w = 9
+    space_w = 1
+    cur_x = x
+    for ch in text:
+        grid = GLYPHS_5X7.get(ch, GLYPHS_5X7[" "])
+        if shadow:
+            for r_idx, row in enumerate(grid):
+                for c_idx, bit in enumerate(row):
+                    if bit == "1":
+                        px = cur_x + col_offsets[c_idx] + 2
+                        py = y + r_idx * 2 + 2
+                        cw = col_widths[c_idx]
+                        draw.rectangle([px, py, px + cw - 1, py + 1], fill=shadow)
+        for r_idx, row in enumerate(grid):
+            for c_idx, bit in enumerate(row):
+                if bit == "1":
+                    px = cur_x + col_offsets[c_idx]
+                    py = y + r_idx * 2
+                    cw = col_widths[c_idx]
+                    draw.rectangle([px, py, px + cw - 1, py + 1], fill=fill)
+        cur_x += char_w + space_w
+
+
+def draw_tech_emblem_icon(
+    draw: ImageDraw.ImageDraw,
+    x: int,
+    y: int,
+    size: int,
+    name: str,
+    corrupted: bool = False,
+    canvas_img: Image.Image | None = None,
+):
+    spec = TECH_SPECS.get(name, {"bg": (30, 32, 44), "fg": (255, 255, 255), "accent": (255, 15, 43), "logo": ""})
+    if not corrupted:
+        bg = spec["bg"]
+    else:
+        bg = (232, 198, 206) if spec["bg"][0] > 180 else (max(14, spec["bg"][0] // 2), 6, 12)
+    acc = spec["accent"] if not corrupted else (220, 18, 44)
 
     # Monitor inner CRT screen
-    draw.rectangle([x, y, x + size, y + size], fill=(8, 8, 14, 255))
-    draw.rectangle([x + 2, y + 2, x + size - 2, y + size - 2], fill=(*bg, 255))
-    # Top CRT reflection bar
-    draw.rectangle([x + 4, y + 4, x + size - 4, y + 6], fill=(*acc, 210))
+    draw.rectangle([x, y, x + size, y + size], fill=(6, 6, 12, 255))
+    draw.rectangle([x + 1, y + 1, x + size - 1, y + size - 1], fill=(*bg, 255), outline=(*acc, 185), width=1)
 
-    # Draw custom recognizable symbol or crisp pixel code inside the CRT monitor
-    cx, cy = x + size // 2, y + size // 2 + 1
-    if name == "REACT":
-        draw.ellipse([cx - 10, cy - 4, cx + 10, cy + 4], outline=(*fg, 255), width=1)
-        draw.ellipse([cx - 4, cy - 10, cx + 4, cy + 10], outline=(*fg, 255), width=1)
-        draw.rectangle([cx - 2, cy - 2, cx + 2, cy + 2], fill=(*fg, 255))
-    elif name == "PYTHON":
-        draw.rectangle([cx - 7, cy - 8, cx + 3, cy - 1], fill=(55, 118, 171, 255))
-        draw.rectangle([cx - 3, cy + 1, cx + 7, cy + 8], fill=(255, 212, 59, 255))
-        draw.rectangle([cx - 5, cy - 6, cx - 3, cy - 4], fill=(255, 255, 255, 255))
-        draw.rectangle([cx + 3, cy + 4, cx + 5, cy + 6], fill=(20, 20, 20, 255))
-    elif name == "RUST":
-        draw.ellipse([cx - 9, cy - 9, cx + 9, cy + 9], outline=(*fg, 255), width=2)
-        draw_pixel_text(draw, cx, cy - 3, "R", scale=1, fill=(255, 255, 255, 255), shadow=None, align="center")
-    elif name == "DOCKER":
-        draw.rectangle([cx - 8, cy, cx + 8, cy + 6], fill=(36, 150, 237, 255))
-        for bx in [-6, -2, 2]:
-            draw.rectangle([cx + bx, cy - 5, cx + bx + 3, cy - 1], fill=(255, 255, 255, 255))
-    elif name == "GIT":
-        draw.polygon([(cx, cy - 9), (cx + 9, cy), (cx, cy + 9), (cx - 9, cy)], fill=(240, 80, 50, 255))
-        draw.line([(cx - 3, cy - 3), (cx + 3, cy + 3)], fill=(255, 255, 255, 255), width=2)
+    target_im = canvas_img if canvas_img is not None else getattr(draw, "_image", None)
+    logo_fn = spec.get("logo", "")
+    logo_pad = 4
+    logo_im = load_official_tech_logo(logo_fn, size - logo_pad * 2) if logo_fn else None
+    if logo_im is not None and target_im is not None:
+        target_im.alpha_composite(logo_im, (x + logo_pad, y + logo_pad))
     else:
-        code = spec["code"]
-        sc = 2 if len(code) <= 2 else 1
         draw_pixel_text(
             draw,
-            cx,
-            cy - (3 * sc),
-            code,
-            scale=sc,
-            fill=(*fg, 255),
-            shadow=(5, 3, 5, 255),
+            x + size // 2,
+            y + size // 2 - 6,
+            name[:2],
+            scale=2,
+            fill=(255, 255, 255, 255),
+            shadow=(0, 0, 0, 255),
             align="center",
         )
 
@@ -553,9 +672,11 @@ def draw_sonic_monitor_slot(
     tech_name: str,
     corrupted: bool = False,
     highlight_border: bool = False,
+    canvas_img: Image.Image | None = None,
 ):
     """
-    Draws an authentic 16-bit Sonic Item Monitor / Zone Slot integrated into Green Hill Zone.
+    Draws an authentic 16-bit Sonic Item Monitor / Zone Slot integrated into Green Hill Zone,
+    featuring the official high-resolution logo on the left and uniform 14px-tall typography.
     """
     casing_outer = (22, 24, 34, 255) if not corrupted else (36, 4, 10, 255)
     casing_mid = (72, 78, 98, 255) if not corrupted else (98, 8, 22, 255)
@@ -577,27 +698,40 @@ def draw_sonic_monitor_slot(
     # Inner screen recess
     draw.rectangle([x + 5, y + 5, x + w - 5, y + h - 5], fill=screen_bg)
 
-    # Left CRT icon box
-    icon_s = h - 16
-    draw_tech_emblem_icon(draw, x + 9, y + 8, icon_s, tech_name, corrupted=corrupted)
+    # Left CRT icon box with official high-res logo
+    icon_s = h - 14
+    draw_tech_emblem_icon(draw, x + 8, y + 7, icon_s, tech_name, corrupted=corrupted, canvas_img=canvas_img)
 
     # Right text label + subtle CRT status LED
     led_col = (40, 220, 96, 255) if not corrupted else (255, 15, 43, 255)
-    draw.rectangle([x + w - 12, y + 9, x + w - 8, y + 13], fill=led_col)
+    draw.rectangle([x + w - 11, y + 8, x + w - 7, y + 12], fill=led_col)
 
     text_col = (244, 240, 242, 255) if not corrupted else (255, 204, 212, 255)
-    label_scale = 2 if len(tech_name) <= 10 or w >= 195 else 1
-    ty = y + (h - 7 * label_scale) // 2
-    draw_pixel_text(
-        draw,
-        x + 9 + icon_s + 10,
-        ty,
-        tech_name,
-        scale=label_scale,
-        fill=text_col,
-        shadow=(0, 0, 0, 255),
-        align="left",
-    )
+    tx = x + 8 + icon_s + 9
+    ty = y + (h - 14) // 2
+    avail_text_w = (x + w - 8) - tx
+    normal_w = len(tech_name) * 10 + max(0, len(tech_name) - 1) * 2
+
+    if normal_w <= avail_text_w:
+        draw_pixel_text(
+            draw,
+            tx,
+            ty,
+            tech_name,
+            scale=2,
+            fill=text_col,
+            shadow=(0, 0, 0, 255),
+            align="left",
+        )
+    else:
+        draw_condensed_scale2_text(
+            draw,
+            tx,
+            ty,
+            tech_name,
+            fill=text_col,
+            shadow=(0, 0, 0, 255),
+        )
 
 
 # ============================================================================
@@ -651,18 +785,12 @@ def apply_exe_interference(img: Image.Image, intensity: float = 1.0, seed: int =
 def save_optimized_gif(frames: list[Image.Image], out_path: str, durations_ms: list[int] | int):
     """
     Saves a sequence of RGBA/RGB PIL images as a crisp, size-optimized looping GIF.
-    Uses a shared global adaptive palette built from key frames (including both normal
-    and EXE states) so neither the blue/green Sonic palette nor the crimson EXE palette
-    suffers color starvation.
+    Each frame is quantized with FASTOCTREE and dither=NONE so normal Green Hill frames,
+    corrupted Sonic.EXE frames, and official high-resolution technology logos retain
+    full 256-color fidelity without color starvation or dithering noise.
     """
-    sample_sheet = Image.new("RGB", (frames[0].width, frames[0].height * min(4, len(frames))))
-    indices = [0, len(frames) // 2, min(len(frames) - 1, 59), len(frames) - 1]
-    for idx_pos, f_idx in enumerate(indices[: min(4, len(frames))]):
-        sample_sheet.paste(frames[f_idx].convert("RGB"), (0, idx_pos * frames[0].height))
-
-    master_pal = sample_sheet.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
     quantized = [
-        f.convert("RGB").quantize(palette=master_pal, dither=Image.Dither.NONE)
+        f.convert("RGB").quantize(colors=256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE)
         for f in frames
     ]
     quantized[0].save(
@@ -676,7 +804,7 @@ def save_optimized_gif(frames: list[Image.Image], out_path: str, durations_ms: l
 
 
 # ============================================================================
-# 7. COMPOSITION 01: HERO ("OLHE MEU PERFIL." — NORMAL SONIC / 80ms SONIC.EXE)
+# 7. COMPOSITION 01: HERO ("OLHE MEU PERFIL." — BLINK TRANSITION + 6s NORMAL / 6s EXE)
 # ============================================================================
 def build_comp_01_hero():
     W, H = 1200, 400
@@ -691,9 +819,11 @@ def build_comp_01_hero():
 
     sonic_norm_0 = render_sonic_character_canvas("normal", breath_offset=0, wag_phase=0, upscale=4)
     sonic_norm_1 = render_sonic_character_canvas("normal", breath_offset=1, wag_phase=1, upscale=4)
-    sonic_blink = render_sonic_character_canvas("blink", breath_offset=0, wag_phase=0, upscale=4)
-    sonic_exe = render_sonic_character_canvas("exe_full", breath_offset=0, wag_phase=0, upscale=4)
-    sonic_eye_micro = render_sonic_character_canvas("exe_eye_micro", breath_offset=0, wag_phase=0, upscale=4)
+    sonic_blink_half = render_sonic_character_canvas("blink_half", breath_offset=0, wag_phase=0, upscale=4)
+    sonic_blink_closed = render_sonic_character_canvas("blink_closed", breath_offset=0, wag_phase=0, upscale=4)
+    sonic_exe_blink_half = render_sonic_character_canvas("exe_blink_half", breath_offset=0, wag_phase=0, upscale=4)
+    sonic_exe_0 = render_sonic_character_canvas("exe_full", breath_offset=0, wag_phase=0, upscale=4)
+    sonic_exe_1 = render_sonic_character_canvas("exe_full", breath_offset=1, wag_phase=1, upscale=4)
 
     sky_norm.save(os.path.join(SRC_DIR, "hero_sky_normal.png"))
     sky_corr.save(os.path.join(SRC_DIR, "hero_sky_corrupted.png"))
@@ -703,16 +833,16 @@ def build_comp_01_hero():
     fg_corr.save(os.path.join(SRC_DIR, "hero_ground_corrupted.png"))
     sonic_norm_0.save(os.path.join(SRC_DIR, "sonic_normal_idle_01.png"))
     sonic_norm_1.save(os.path.join(SRC_DIR, "sonic_normal_idle_02.png"))
-    sonic_blink.save(os.path.join(SRC_DIR, "sonic_normal_blink.png"))
-    sonic_exe.save(os.path.join(SRC_DIR, "sonic_exe_corrupt_01.png"))
-    sonic_eye_micro.save(os.path.join(SRC_DIR, "sonic_exe_eye_micro.png"))
+    sonic_blink_closed.save(os.path.join(SRC_DIR, "sonic_normal_blink.png"))
+    sonic_exe_0.save(os.path.join(SRC_DIR, "sonic_exe_corrupt_01.png"))
+    sonic_exe_blink_half.save(os.path.join(SRC_DIR, "sonic_exe_eye_micro.png"))
 
     # Also save Hero Title Plates ("OLHE MEU PERFIL.") for AE
+    plates = {}
     for plate_mode in ["normal", "exe"]:
         t_img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         td = ImageDraw.Draw(t_img)
         is_ex = plate_mode == "exe"
-        # Classic Sonic emblem frame on right-center
         bx0, by0, bx1, by1 = 470, 128, 1118, 256
         td.rectangle([bx0 + 6, by0 + 6, bx1 + 6, by1 + 6], fill=(4, 2, 4, 205))
         td.rectangle([bx0, by0, bx1, by1], fill=(12, 16, 36, 238) if not is_ex else (16, 2, 6, 248))
@@ -720,10 +850,8 @@ def build_comp_01_hero():
         inner_c = (24, 88, 216, 255) if not is_ex else (128, 0, 20, 255)
         td.rectangle([bx0, by0, bx1, by1], outline=border_c, width=4)
         td.rectangle([bx0 + 6, by0 + 6, bx1 - 6, by1 - 6], outline=inner_c, width=2)
-        # Decorative classic wing / ribbon bars
         td.rectangle([bx0 + 18, by0 + 18, bx1 - 18, by0 + 24], fill=border_c)
         td.rectangle([bx0 + 18, by1 - 24, bx1 - 18, by1 - 18], fill=inner_c)
-        # Strictly ONLY the allowed text: "OLHE MEU PERFIL."
         txt_col = (255, 252, 240, 255) if not is_ex else (255, 20, 48, 255)
         sh_col = (12, 24, 88, 255) if not is_ex else (56, 0, 10, 255)
         draw_pixel_text(
@@ -738,23 +866,38 @@ def build_comp_01_hero():
             align="center",
         )
         t_img.save(os.path.join(SRC_DIR, f"hero_title_plate_{plate_mode}.png"))
+        plates[plate_mode] = t_img
 
-    # Build 38-frame seamless animation sequence
-    # Frame 22 is pre-glitch (40ms), Frame 23 & 24 are Classic Sonic.EXE (40ms + 40ms = 80ms total!),
-    # Frame 25 is recovery (40ms). Frame 33 has a 40ms eye-only micro-flicker.
+    # Timeline specification:
+    # - 24 frames Normal (24 * 250ms = 6,000ms = 6.0s)
+    # - 3 frames Eye-Blink Transition into EXE:
+    #     f=24: blink_half (80ms)
+    #     f=25: blink_closed (90ms) -> transition trigger
+    #     f=26: exe_blink_half (80ms) -> eyes opening as Sonic.EXE
+    # - 24 frames Corrupted Sonic.EXE (24 * 250ms = 6,000ms = 6.0s, clean non-glitched corrupted animation)
+    # - 3 frames Eye-Blink Transition back to Normal:
+    #     f=51: exe_blink_half (80ms)
+    #     f=52: blink_closed (90ms)
+    #     f=53: blink_half (80ms)
+    timeline = []
+    for i in range(24):
+        timeline.append(("normal", False, 250, False))
+    timeline.append(("blink_half", False, 110, False))
+    timeline.append(("blink_closed", False, 130, False))
+    timeline.append(("exe_blink_half", True, 110, False))
+    for i in range(24):
+        timeline.append(("exe_full", True, 250, False))
+    timeline.append(("exe_blink_half", True, 110, False))
+    timeline.append(("blink_closed", False, 130, False))
+    timeline.append(("blink_half", False, 110, False))
+
     frames = []
     durations = []
-    total_f = 36
+    total_f = len(timeline)
 
-    for f in range(total_f):
-        is_pre_glitch = f == 21
-        is_exe_frame = f in (22, 23)
-        is_post_glitch = f == 24
-        is_eye_flicker = f == 31
-
-        corrupt_env = is_exe_frame
-        sway = int(round(math.sin(f * 2 * math.pi / total_f) * 3))
-        cloud_dx = int(f * 160 / total_f)
+    for f, (c_mode, corrupt_env, dur_ms, is_trans_peak) in enumerate(timeline):
+        sway = int(round(math.sin(f * 2 * math.pi / 24.0) * 3))
+        cloud_dx = int((f * 6) % 640)
 
         canvas = render_ghz_sky_layer(W, H, corrupted=corrupt_env, cloud_shift=cloud_dx)
         mtn = render_ghz_mountains_and_water_layer(W, H, corrupted=corrupt_env, water_phase=f)
@@ -764,54 +907,40 @@ def build_comp_01_hero():
         canvas = Image.alpha_composite(canvas, mtn)
         canvas = Image.alpha_composite(canvas, fg)
 
-        # Floating Golden Rings in Green Hill background (turn crimson during EXE frame)
         for idx_r, rx in enumerate([520, 580, 640]):
-            ry = 72 + int(math.sin((f + idx_r * 4) * 2 * math.pi / total_f) * 4)
-            ring_sp = render_ring_sprite(size=36, phase=((f + idx_r * 2) % 12) / 12.0, corrupted=corrupt_env)
+            ry = 72 + int(math.sin((f + idx_r * 3) * 2 * math.pi / 12.0) * 4)
+            ring_sp = render_ring_sprite(size=36, phase=((f + idx_r) % 4) / 4.0, corrupted=corrupt_env)
             canvas.alpha_composite(ring_sp, (rx, ry))
 
-        # Character placement (EXACT same coordinates (108, 22) in every single frame!)
         char_x, char_y = 108, 22
-        breath = 1 if (f // 4) % 2 == 1 else 0
-        wag = 1 if (f // 3) % 2 == 1 else 0
+        breath = 1 if (f // 2) % 2 == 1 else 0
 
-        if is_exe_frame:
-            char_sp = sonic_exe
-        elif is_eye_flicker:
-            char_sp = sonic_eye_micro
-        elif f in (10, 11):
-            char_sp = sonic_blink
+        if c_mode == "normal":
+            char_sp = sonic_norm_1 if breath else sonic_norm_0
+        elif c_mode == "blink_half":
+            char_sp = sonic_blink_half
+        elif c_mode == "blink_closed":
+            char_sp = sonic_blink_closed
+        elif c_mode == "exe_blink_half":
+            char_sp = sonic_exe_blink_half
         else:
-            char_sp = render_sonic_character_canvas("normal", breath_offset=breath, wag_phase=wag, upscale=4)
+            char_sp = sonic_exe_1 if breath else sonic_exe_0
 
         canvas.alpha_composite(char_sp, (char_x, char_y))
+        canvas.alpha_composite(plates["exe" if corrupt_env else "normal"], (0, 0))
 
-        # Overlay Title Plate ("OLHE MEU PERFIL.")
-        plate_path = os.path.join(SRC_DIR, f"hero_title_plate_{'exe' if is_exe_frame else 'normal'}.png")
-        plate_img = Image.open(plate_path).convert("RGBA")
-        canvas.alpha_composite(plate_img, (0, 0))
+        if is_trans_peak:
+            canvas = apply_exe_interference(canvas, intensity=0.55, seed=101 + f)
 
-        # Apply localized distortion on transition/EXE frames
-        if is_pre_glitch:
-            canvas = apply_exe_interference(canvas, intensity=0.55, seed=101)
-            durations.append(40)
-        elif is_exe_frame:
-            canvas = apply_exe_interference(canvas, intensity=1.15 if f == 22 else 0.85, seed=202 + f)
-            durations.append(40)  # 2 frames * 40ms = 80ms total EXE duration!
-        elif is_post_glitch:
-            canvas = apply_exe_interference(canvas, intensity=0.45, seed=303)
-            durations.append(40)
-        elif is_eye_flicker:
-            durations.append(40)
-        else:
-            durations.append(90)
-
-        canvas = apply_crt_scanlines(canvas, alpha=24 if not is_exe_frame else 48)
+        canvas = apply_crt_scanlines(canvas, alpha=22 if not corrupt_env else 34)
         frames.append(canvas)
+        durations.append(dur_ms)
 
         if f == 0:
             canvas.save(os.path.join(ASSETS_DIR, "previews", "hero_normal_frame.png"))
-        elif f == 22:
+        elif f == 25:
+            canvas.save(os.path.join(ASSETS_DIR, "previews", "hero_blink_frame.png"))
+        elif f == 30:
             canvas.save(os.path.join(ASSETS_DIR, "previews", "hero_exe_80ms_frame.png"))
 
     hero_gif_path = os.path.join(ASSETS_DIR, "hero", "lwx-exe-hero.gif")
@@ -820,80 +949,110 @@ def build_comp_01_hero():
 
 
 # ============================================================================
-# 8. COMPOSITION 02: IDENTITY (COMPACT GRAPHICAL SONIC IDLE + REAL DEV INFO)
+# 8. COMPOSITION 02: IDENTITY (6s NORMAL + 6s CORRUPTED + "MOTION DESIGNER")
 # ============================================================================
 def build_comp_02_identity():
     W, H = 1200, 300
     frames = []
     durations = []
-    total_f = 30
 
-    # Save static identity frame plate for AE COMP_02_IDENTITY
-    plate = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    pd = ImageDraw.Draw(plate)
-    # Left character stage pedestal + Right classic Sonic border box
-    pd.rectangle([28, 20, 1172, 280], fill=(8, 7, 12, 245))
-    pd.rectangle([28, 20, 1172, 280], outline=(138, 0, 24, 255), width=3)
-    pd.rectangle([34, 26, 1166, 274], outline=(38, 22, 32, 255), width=2)
+    plates = {}
+    for p_mode in ["normal", "corrupted"]:
+        is_c = p_mode == "corrupted"
+        plate = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        pd = ImageDraw.Draw(plate)
+        pd.rectangle([28, 20, 1172, 280], fill=(8, 7, 12, 245) if not is_c else (14, 3, 6, 248))
+        pd.rectangle([28, 20, 1172, 280], outline=(138, 0, 24, 255) if not is_c else (255, 15, 43, 255), width=3)
+        pd.rectangle([34, 26, 1166, 274], outline=(38, 22, 32, 255) if not is_c else (120, 0, 20, 255), width=2)
 
-    # Mini Green Hill checkered pedestal under Sonic on the left
-    for col_i, gx in enumerate(range(54, 342, 24)):
-        pd.rectangle([gx, 232, gx + 23, 258], fill=(180, 88, 0, 255) if col_i % 2 == 0 else (112, 48, 0, 255))
-    pd.rectangle([54, 222, 342, 233], fill=(40, 200, 0, 255))
+        # Mini Green Hill checkered pedestal under Sonic on the left
+        for col_i, gx in enumerate(range(54, 342, 24)):
+            c_even = (180, 88, 0, 255) if not is_c else (72, 16, 14, 255)
+            c_odd = (112, 48, 0, 255) if not is_c else (38, 6, 8, 255)
+            pd.rectangle([gx, 232, gx + 23, 258], fill=c_even if col_i % 2 == 0 else c_odd)
+        pd.rectangle([54, 222, 342, 233], fill=(40, 200, 0, 255) if not is_c else (196, 8, 28, 255))
 
-    # Divider vertical bar
-    pd.rectangle([372, 44, 376, 256], fill=(138, 0, 24, 255))
+        # Divider vertical bar
+        pd.rectangle([372, 44, 376, 256], fill=(138, 0, 24, 255) if not is_c else (255, 15, 43, 255))
 
-    # Concise, real professional information ONLY (Rule 3 & Section 6)
-    draw_pixel_text(pd, 412, 54, "EVANDRO", scale=5, fill=(255, 255, 255, 255), shadow=(138, 0, 24, 255))
-    draw_pixel_text(pd, 690, 66, "@LLEWXAMDEV", scale=3, fill=(255, 216, 0, 255), shadow=(0, 0, 0, 255))
+        # Concise, real professional information ONLY — updated to MOTION DESIGNER
+        draw_pixel_text(
+            pd,
+            412,
+            54,
+            "EVANDRO",
+            scale=5,
+            fill=(255, 255, 255, 255) if not is_c else (255, 24, 52, 255),
+            shadow=(138, 0, 24, 255) if not is_c else (48, 0, 8, 255),
+        )
+        draw_pixel_text(
+            pd,
+            690,
+            66,
+            "@LLEWXAMDEV",
+            scale=3,
+            fill=(255, 216, 0, 255) if not is_c else (255, 160, 176, 255),
+            shadow=(0, 0, 0, 255),
+        )
 
-    pd.rectangle([412, 106, 1128, 110], fill=(184, 0, 28, 255))
+        pd.rectangle([412, 106, 1128, 110], fill=(184, 0, 28, 255) if not is_c else (255, 15, 43, 255))
 
-    draw_pixel_text(
-        pd, 412, 128, "FULL-STACK DEVELOPER · 2D/3D ANIMATOR", scale=3, fill=(238, 232, 236, 255), shadow=(0, 0, 0, 255)
-    )
-    draw_pixel_text(
-        pd, 412, 168, "SYSTEMS ANALYSIS AND DEVELOPMENT (ADS)", scale=2, fill=(172, 162, 170, 255), shadow=(0, 0, 0, 255)
-    )
-    draw_pixel_text(
-        pd,
-        412,
-        204,
-        "TS · JS · PYTHON · RUST · NODE.JS · REACT · AE · BLENDER",
-        scale=2,
-        fill=(76, 156, 255, 255),
-        shadow=(0, 0, 0, 255),
-    )
-    plate.save(os.path.join(SRC_DIR, "identity_panel_plate.png"))
+        draw_pixel_text(
+            pd,
+            412,
+            128,
+            "FULL-STACK DEVELOPER · MOTION DESIGNER",
+            scale=3,
+            fill=(238, 232, 236, 255) if not is_c else (255, 210, 218, 255),
+            shadow=(0, 0, 0, 255),
+        )
+        draw_pixel_text(
+            pd,
+            412,
+            168,
+            "SYSTEMS ANALYSIS AND DEVELOPMENT (ADS)",
+            scale=2,
+            fill=(172, 162, 170, 255) if not is_c else (210, 130, 145, 255),
+            shadow=(0, 0, 0, 255),
+        )
+        draw_pixel_text(
+            pd,
+            412,
+            204,
+            "TS · JS · PYTHON · RUST · NODE.JS · REACT · AE · BLENDER",
+            scale=2,
+            fill=(76, 156, 255, 255) if not is_c else (255, 64, 92, 255),
+            shadow=(0, 0, 0, 255),
+        )
+        plates[p_mode] = plate
 
-    for f in range(total_f):
+    plates["normal"].save(os.path.join(SRC_DIR, "identity_panel_plate.png"))
+
+    # 24 frames Normal (6.0s) + 1 transition (100ms) + 24 frames Corrupted (6.0s) + 1 transition (100ms)
+    id_timeline = []
+    for i in range(24):
+        id_timeline.append(("normal", False, 250, False))
+    id_timeline.append(("blink_closed", False, 100, True))
+    for i in range(24):
+        id_timeline.append(("exe_full", True, 250, False))
+    id_timeline.append(("blink_closed", True, 100, True))
+
+    for f, (mode, is_c, dur_ms, is_trans) in enumerate(id_timeline):
         bg = Image.new("RGBA", (W, H), (5, 3, 6, 255))
-        bg.alpha_composite(plate, (0, 0))
+        bg.alpha_composite(plates["corrupted" if is_c else "normal"], (0, 0))
 
-        breath = 1 if (f // 4) % 2 == 1 else 0
-        wag = 1 if (f // 5) % 2 == 1 else 0
-
-        if f == 21:
-            mode = "exe_eye_micro"
-        elif f in (8, 9):
-            mode = "blink"
-        elif f in (14, 15, 16):
-            mode = "glance"
-        else:
-            mode = "normal"
+        breath = 1 if (f // 2) % 2 == 1 else 0
+        wag = f % 4
 
         sp = render_sonic_character_canvas(mode=mode, breath_offset=breath, wag_phase=wag, upscale=3, style="fullbody")
         bg.alpha_composite(sp, (68, 12))
 
-        if f == 21:
-            bg = apply_exe_interference(bg, intensity=0.5, seed=55)
-            durations.append(50)
-        else:
-            durations.append(90)
+        if is_trans:
+            bg = apply_exe_interference(bg, intensity=0.5, seed=55 + f)
 
         bg = apply_crt_scanlines(bg, alpha=22)
         frames.append(bg)
+        durations.append(dur_ms)
 
     out_gif = os.path.join(ASSETS_DIR, "identity", "lwx-exe-identity.gif")
     save_optimized_gif(frames, out_gif, durations)
@@ -902,18 +1061,18 @@ def build_comp_02_identity():
 
 
 # ============================================================================
-# 9. COMPOSITION 03: DIVIDERS (3 DISTINCT SONIC / SONIC.EXE VARIATIONS)
+# 9. COMPOSITION 03: DIVIDERS (6s NORMAL + 6s CORRUPTED FOR ALL 3 VARIATIONS)
 # ============================================================================
 def build_comp_03_dividers():
     W, H = 1200, 76
-    total_f = 24
+    # Shared 6s Normal + transition + 6s Corrupted + transition timeline
+    div_timeline = [(False, 250, False)] * 24 + [(True, 100, True)] + [(True, 250, False)] * 24 + [(False, 100, True)]
 
-    # --- Variation A: Golden Ring (spins, briefly turns red & corrupted, returns) ---
+    # --- Variation A: Golden Ring (6s Golden Ring spinning -> 6s Blood Ring spinning) ---
     frames_a, dur_a = [], []
-    for f in range(total_f):
+    for f, (is_corr, dur_ms, is_trans) in enumerate(div_timeline):
         img = Image.new("RGBA", (W, H), (5, 3, 5, 255))
         d = ImageDraw.Draw(img)
-        is_corr = f in (14, 15)
         line_col = (255, 216, 0, 190) if not is_corr else (255, 15, 43, 240)
         sub_col = (24, 88, 216, 160) if not is_corr else (120, 0, 18, 200)
 
@@ -922,67 +1081,46 @@ def build_comp_03_dividers():
         d.rectangle([120, H // 2 + 4, 540, H // 2 + 5], fill=sub_col)
         d.rectangle([660, H // 2 + 4, 1080, H // 2 + 5], fill=sub_col)
 
-        ring = render_ring_sprite(size=52, phase=(f % 12) / 12.0, corrupted=is_corr)
+        ring = render_ring_sprite(size=52, phase=(f % 4) / 4.0, corrupted=is_corr)
         img.alpha_composite(ring, (W // 2 - 26, H // 2 - 26))
-        if is_corr:
-            img = apply_exe_interference(img, intensity=0.65, seed=70 + f)
-            dur_a.append(50)
-        else:
-            dur_a.append(80)
+        if is_trans:
+            img = apply_exe_interference(img, intensity=0.55, seed=70 + f)
+        dur_a.append(dur_ms)
         frames_a.append(apply_crt_scanlines(img, 20))
 
     path_a = os.path.join(ASSETS_DIR, "dividers", "divider-golden-ring.gif")
     save_optimized_gif(frames_a, path_a, dur_a)
     frames_a[0].save(os.path.join(SRC_DIR, "divider_a_golden_ring.png"))
 
-    # --- Variation B: Corrupted Ring (pixel ring glitches, vanishes, reconstructs) ---
+    # --- Variation B: Corrupted Ring (6s Golden Segmented Ring -> 6s Crimson Corrupted Ring) ---
     frames_b, dur_b = [], []
-    for f in range(total_f):
+    for f, (is_corr, dur_ms, is_trans) in enumerate(div_timeline):
         img = Image.new("RGBA", (W, H), (5, 3, 5, 255))
         d = ImageDraw.Draw(img)
-        # Disintegration curve around frames 10..17
-        if f in (11, 12):
-            scatter = 1.0  # vanished into glitch bars
-        elif f in (9, 10):
-            scatter = 0.45 + (f - 9) * 0.3
-        elif f in (13, 14, 15, 16):
-            scatter = max(0.0, 0.85 - (f - 13) * 0.22)
-        else:
-            scatter = 0.0
-
-        bar_col = (184, 0, 28, 200) if scatter > 0 else (212, 168, 0, 180)
+        scatter = 0.65 if is_trans else 0.0
+        bar_col = (255, 15, 43, 215) if is_corr else (212, 168, 0, 185)
         for seg_x in range(80, 530, 28):
-            if scatter < 0.8 or (seg_x + f) % 3 == 0:
-                d.rectangle([seg_x, H // 2 - 2, seg_x + 18, H // 2 + 1], fill=bar_col)
+            d.rectangle([seg_x, H // 2 - 2, seg_x + 18, H // 2 + 1], fill=bar_col)
         for seg_x in range(670, 1120, 28):
-            if scatter < 0.8 or (seg_x + f) % 3 == 0:
-                d.rectangle([seg_x, H // 2 - 2, seg_x + 18, H // 2 + 1], fill=bar_col)
+            d.rectangle([seg_x, H // 2 - 2, seg_x + 18, H // 2 + 1], fill=bar_col)
 
-        if scatter < 0.98:
-            ring = render_ring_sprite(
-                size=52, phase=(f % 12) / 12.0, corrupted=(scatter > 0.2), scatter=scatter
-            )
-            img.alpha_composite(ring, (W // 2 - 26, H // 2 - 26))
-        else:
-            # Brief horizontal pixel static where the ring disappeared
-            for sy in range(H // 2 - 14, H // 2 + 14, 6):
-                d.rectangle([W // 2 - 34, sy, W // 2 + 34, sy + 2], fill=(255, 15, 43, 210))
-
-        dur_b.append(60 if scatter > 0 else 80)
+        ring = render_ring_sprite(size=52, phase=(f % 4) / 4.0, corrupted=is_corr, scatter=scatter)
+        img.alpha_composite(ring, (W // 2 - 26, H // 2 - 26))
+        if is_trans:
+            img = apply_exe_interference(img, intensity=0.55, seed=170 + f)
+        dur_b.append(dur_ms)
         frames_b.append(apply_crt_scanlines(img, 22))
 
     path_b = os.path.join(ASSETS_DIR, "dividers", "divider-corrupted-ring.gif")
     save_optimized_gif(frames_b, path_b, dur_b)
-    frames_b[10].save(os.path.join(SRC_DIR, "divider_b_corrupted_ring.png"))
+    frames_b[26].save(os.path.join(SRC_DIR, "divider_b_corrupted_ring.png"))
 
-    # --- Variation C: Green Hill Transition Strip (grass & checkerboard strip with brief glitch) ---
+    # --- Variation C: Green Hill Transition Strip (6s Normal Grass/Soil -> 6s Corrupted Blood Grass/Soil) ---
     frames_c, dur_c = [], []
-    for f in range(total_f):
-        is_corr = f in (15, 16)
+    for f, (is_corr, dur_ms, is_trans) in enumerate(div_timeline):
         img = Image.new("RGBA", (W, H), (5, 3, 5, 255))
         d = ImageDraw.Draw(img)
 
-        # Horizontal Green Hill checkerboard strip + grass cap
         strip_y = 26
         tile = 16
         soil_a = (200, 100, 0, 255) if not is_corr else (58, 18, 12, 255)
@@ -999,11 +1137,9 @@ def build_comp_03_dividers():
         d.rectangle([40, strip_y - 8, W - 40, strip_y + 2], fill=grass_hi)
         d.rectangle([40, strip_y + 2, W - 40, strip_y + 7], fill=grass_mid)
 
-        if is_corr:
-            img = apply_exe_interference(img, intensity=0.8, seed=90 + f)
-            dur_c.append(50)
-        else:
-            dur_c.append(80)
+        if is_trans:
+            img = apply_exe_interference(img, intensity=0.6, seed=290 + f)
+        dur_c.append(dur_ms)
         frames_c.append(apply_crt_scanlines(img, 22))
 
     path_c = os.path.join(ASSETS_DIR, "dividers", "divider-green-hill-transition.gif")
@@ -1086,80 +1222,67 @@ REAL_PROJECTS = [
 ]
 
 
-def draw_project_mini_preview(draw: ImageDraw.ImageDraw, x: int, y: int, w: int, h: int, ptype: str, acc, sec, f: int, is_corr: bool):
-    # Inner CRT preview viewport
-    draw.rectangle([x, y, x + w, y + h], fill=(6, 5, 10, 255))
-    border = (255, 15, 43, 255) if is_corr else (*acc, 255)
-    draw.rectangle([x, y, x + w, y + h], outline=border, width=2)
+def draw_project_logo_or_preview(
+    card_img: Image.Image,
+    draw: ImageDraw.ImageDraw,
+    x: int,
+    y: int,
+    w: int,
+    h: int,
+    slug: str,
+    ptype: str,
+    acc: tuple[int, int, int],
+    sec: tuple[int, int, int],
+):
+    """
+    Draws the static high-resolution project logo (for AegisHub, AegisCore, HackerPage,
+    Soul-List, Polybech) or the 2.5D city preview (for llewxam.me, as requested by the user).
+    """
+    draw.rectangle([x, y, x + w, y + h], fill=(8, 6, 12, 255))
+    logo_path = os.path.join(ASSETS_DIR, "projects", "logos", f"logo-{slug}.png")
 
-    if ptype == "webgl_city":
-        # 2.5D city skyline + crimson visor beacon
-        draw.rectangle([x + 3, y + 3, x + w - 3, y + h - 3], fill=(14, 10, 24, 255))
-        b_widths = [24, 32, 28, 36, 26, 30]
-        bx = x + 10
-        for idx, bw in enumerate(b_widths):
-            bh = 34 + (idx * 17) % 42
-            draw.rectangle([bx, y + h - bh - 4, bx + bw - 4, y + h - 4], fill=(24, 20, 38, 255))
-            # Glowing windows
-            for wy in range(y + h - bh + 4, y + h - 10, 10):
-                draw.rectangle([bx + 5, wy, bx + 11, wy + 4], fill=(*sec, 220))
-            bx += bw
-        # Glowing red visor dot pulsing
-        vx, vy = x + w - 46, y + 34
-        draw.ellipse([vx - 8, vy - 4, vx + 8, vy + 4], fill=(255, 15, 43, 255))
-    elif ptype == "security_radar":
-        # Rust scanner grid + risk score gauge
-        for gx in range(x + 12, x + w - 12, 20):
-            draw.line([(gx, y + 8), (gx, y + h - 8)], fill=(32, 16, 24, 255), width=1)
-        for gy in range(y + 12, y + h - 12, 16):
-            draw.line([(x + 8, gy), (x + w - 8, gy)], fill=(32, 16, 24, 255), width=1)
-        sweep_x = x + 12 + ((f * 14) % (w - 28))
-        draw.rectangle([sweep_x, y + 8, sweep_x + 4, y + h - 8], fill=(*acc, 230))
-        draw_pixel_text(draw, x + w // 2, y + h // 2 - 8, "RUST SCAN", scale=2, fill=(255, 255, 255, 255), align="center")
-    elif ptype == "shield_matrix":
-        cx, cy = x + w // 2, y + h // 2
-        draw.polygon([(cx, cy - 30), (cx + 28, cy - 16), (cx + 22, cy + 20), (cx, cy + 32), (cx - 22, cy + 20), (cx - 28, cy - 16)], fill=(14, 34, 38, 255), outline=(*acc, 255))
-        draw_pixel_text(draw, cx, cy - 6, "AEGIS", scale=2, fill=(255, 255, 255, 255), align="center")
-    elif ptype == "breach_3d":
-        cx, cy = x + w // 2, y + h // 2
-        for r_i in range(1, 4):
-            rx, ry = r_i * 22, r_i * 12
-            draw.rectangle([cx - rx, cy - ry, cx + rx, cy + ry], outline=(*acc, 190), width=1)
-        draw_pixel_text(draw, cx, cy - 6, "3D ROOM", scale=2, fill=(255, 255, 255, 255), align="center")
-    elif ptype == "bot_socket":
-        for i in range(4):
-            ly = y + 16 + i * 18
-            lw = 60 + ((i * 29 + f * 8) % 70)
-            draw.rectangle([x + 14, ly, x + 14 + lw, ly + 8], fill=(*acc, 235) if i % 2 == 0 else (*sec, 235))
-        draw_pixel_text(draw, x + w - 14, y + h - 22, "1400+ CMD", scale=2, fill=(255, 255, 255, 255), align="right")
+    if slug != "portfolio" and os.path.exists(logo_path):
+        logo_im = Image.open(logo_path).convert("RGBA")
+        inner_w, inner_h = w - 8, h - 8
+        logo_resized = logo_im.resize((inner_w, inner_h), Image.Resampling.LANCZOS)
+        card_img.alpha_composite(logo_resized, (x + 4, y + 4))
     else:
-        # Polybech benchmark bars
-        bars = [78, 72, 66, 48, 36, 54]
-        bx = x + 18
-        for b_i, bh in enumerate(bars):
-            col = (*acc, 255) if b_i < 2 else (*sec, 230)
-            draw.rectangle([bx, y + h - 10 - bh, bx + 18, y + h - 10], fill=col)
-            bx += 26
+        # 2.5D city skyline + crimson visor beacon for llewxam.me
+        draw.rectangle([x + 4, y + 4, x + w - 4, y + h - 4], fill=(14, 10, 24, 255))
+        b_widths = [36, 46, 40, 52, 38, 44]
+        bx = x + 14
+        for idx, bw in enumerate(b_widths):
+            bh = 76 + (idx * 31) % 96
+            draw.rectangle([bx, y + h - bh - 6, bx + bw - 6, y + h - 6], fill=(24, 20, 38, 255))
+            for wy in range(y + h - bh + 8, y + h - 16, 18):
+                draw.rectangle([bx + 8, wy, bx + 18, wy + 8], fill=(*sec, 220))
+                if bw > 40:
+                    draw.rectangle([bx + 24, wy, bx + 34, wy + 8], fill=(*acc, 185))
+            bx += bw
+        vx, vy = x + w - 68, y + 58
+        draw.ellipse([vx - 16, vy - 8, vx + 16, vy + 8], fill=(255, 15, 43, 255))
+
+    draw.rectangle([x, y, x + w, y + h], outline=(*acc, 255), width=3)
+    draw.rectangle([x + 3, y + 3, x + w - 3, y + h - 3], outline=(255, 216, 0, 140), width=1)
 
 
 def render_sonic_exe_menu_button(label: str, out_gif_path: str, out_png_path: str = None, width=320, height=54):
     frames = []
     durations = []
-    total_f = 16
-    for f in range(total_f):
-        is_corr = f == 11
+    btn_timeline = [(False, 250, False)] * 24 + [(True, 100, True)] + [(True, 250, False)] * 24 + [(False, 100, True)]
+    for f, (is_corr, dur_ms, is_trans) in enumerate(btn_timeline):
         img = Image.new("RGBA", (width, height), (5, 3, 5, 255))
         d = ImageDraw.Draw(img)
 
         outer_b = (255, 15, 43, 255) if is_corr else (168, 0, 28, 255)
-        inner_b = (255, 216, 0, 255) if (f // 4) % 2 == 0 and not is_corr else (255, 24, 52, 255)
-        fill_c = (18, 6, 12, 255) if not is_corr else (42, 4, 12, 255)
+        inner_b = (255, 216, 0, 255) if (f // 2) % 2 == 0 and not is_corr else (255, 24, 52, 255)
+        fill_c = (18, 6, 12, 255) if not is_corr else (36, 4, 10, 255)
 
         d.rectangle([2, 2, width - 3, height - 3], fill=fill_c, outline=outer_b, width=3)
         d.rectangle([7, 7, width - 8, height - 8], outline=inner_b, width=1)
 
         # Animated pixel selection arrow ►
-        ax = 20 + (2 if (f // 3) % 2 == 0 else 0)
+        ax = 20 + (2 if (f // 2) % 2 == 0 else 0)
         ay = height // 2
         d.polygon([(ax, ay - 7), (ax + 10, ay), (ax, ay + 7)], fill=(255, 216, 0, 255) if not is_corr else (255, 15, 43, 255))
 
@@ -1169,16 +1292,14 @@ def render_sonic_exe_menu_button(label: str, out_gif_path: str, out_png_path: st
             (height - 14) // 2,
             label,
             scale=2,
-            fill=(255, 248, 250, 255) if not is_corr else (255, 42, 68, 255),
+            fill=(255, 248, 250, 255) if not is_corr else (255, 68, 92, 255),
             shadow=(0, 0, 0, 255),
             align="center",
         )
 
-        if is_corr:
-            img = apply_exe_interference(img, intensity=0.55, seed=33 + f)
-            durations.append(50)
-        else:
-            durations.append(90)
+        if is_trans:
+            img = apply_exe_interference(img, intensity=0.5, seed=33 + f)
+        durations.append(dur_ms)
         frames.append(apply_crt_scanlines(img, 20))
 
     save_optimized_gif(frames, out_gif_path, durations)
@@ -1187,17 +1308,17 @@ def render_sonic_exe_menu_button(label: str, out_gif_path: str, out_png_path: st
 
 
 def build_comp_04_projects():
-    # 1. Section Header GIF (COMP_04_PROJECTS, 1200 x 110)
+    # 1. Section Header GIF (COMP_04_PROJECTS, 1200 x 110) — 6s Normal + 6s Corrupted
     W, H = 1200, 110
     h_frames, h_dur = [], []
-    for f in range(20):
-        is_corr = f in (13, 14)
+    hdr_timeline = [(False, 250, False)] * 24 + [(True, 100, True)] + [(True, 250, False)] * 24 + [(False, 100, True)]
+    for f, (is_corr, dur_ms, is_trans) in enumerate(hdr_timeline):
         img = Image.new("RGBA", (W, H), (5, 3, 5, 255))
         d = ImageDraw.Draw(img)
         d.rectangle([28, 14, W - 28, H - 14], fill=(12, 6, 10, 255), outline=(168, 0, 28, 255) if not is_corr else (255, 15, 43, 255), width=3)
         d.rectangle([36, 22, W - 36, H - 22], outline=(255, 216, 0, 180) if not is_corr else (138, 0, 22, 255), width=1)
 
-        ring_l = render_ring_sprite(size=36, phase=(f % 10) / 10.0, corrupted=is_corr)
+        ring_l = render_ring_sprite(size=36, phase=(f % 4) / 4.0, corrupted=is_corr)
         img.alpha_composite(ring_l, (64, H // 2 - 18))
         img.alpha_composite(ring_l, (W - 100, H // 2 - 18))
 
@@ -1217,85 +1338,88 @@ def build_comp_04_projects():
             68,
             "PUBLIC REPOSITORIES & INTERACTIVE WEB SYSTEMS",
             scale=2,
-            fill=(210, 198, 204, 255),
+            fill=(210, 198, 204, 255) if not is_corr else (255, 175, 188, 255),
             shadow=(0, 0, 0, 255),
             align="center",
         )
-        if is_corr:
-            img = apply_exe_interference(img, intensity=0.6, seed=400 + f)
-            h_dur.append(50)
-        else:
-            h_dur.append(90)
+        if is_trans:
+            img = apply_exe_interference(img, intensity=0.55, seed=400 + f)
+        h_dur.append(dur_ms)
         h_frames.append(apply_crt_scanlines(img, 22))
 
     header_gif = os.path.join(ASSETS_DIR, "projects", "projects-header-exe.gif")
     save_optimized_gif(h_frames, header_gif, h_dur)
     h_frames[0].save(os.path.join(SRC_DIR, "projects_header_plate.png"))
 
-    # 2. Individual Project Data-Select Cards (580 x 190) + Menu Buttons (320 x 54)
+    # 2. High-Resolution Static Project Cards (1160 x 380 24-bit PNG) + Menu Buttons
     for idx, proj in enumerate(REAL_PROJECTS):
-        CW, CH = 580, 190
-        c_frames, c_dur = [], []
-        for f in range(18):
-            is_corr = f == (10 + idx) % 18
-            card = Image.new("RGBA", (CW, CH), (5, 3, 5, 255))
-            cd = ImageDraw.Draw(card)
+        CW, CH = 1160, 380
+        card = Image.new("RGBA", (CW, CH), (5, 3, 5, 255))
+        cd = ImageDraw.Draw(card)
 
-            outer_col = (255, 15, 43, 255) if is_corr else (138, 0, 24, 255)
-            inner_col = (255, 216, 0, 220) if (f // 4) % 2 == 0 and not is_corr else (72, 16, 28, 255)
-            cd.rectangle([4, 4, CW - 5, CH - 5], fill=(11, 7, 11, 255), outline=outer_col, width=3)
-            cd.rectangle([10, 10, CW - 11, CH - 11], outline=inner_col, width=1)
+        outer_col = (168, 0, 28, 255)
+        inner_col = (255, 216, 0, 220)
+        cd.rectangle([8, 8, CW - 9, CH - 9], fill=(11, 7, 11, 255), outline=outer_col, width=5)
+        cd.rectangle([18, 18, CW - 19, CH - 19], outline=inner_col, width=2)
 
-            # Top slot header strip
-            cd.rectangle([14, 14, CW - 15, 42], fill=(24, 8, 16, 255))
-            draw_pixel_text(
-                cd,
-                24,
-                21,
-                f"SLOT 0{idx + 1} · {proj['title']}",
-                scale=2,
-                fill=(255, 216, 0, 255) if not is_corr else (255, 28, 54, 255),
-                shadow=(0, 0, 0, 255),
-            )
+        # Top slot header strip
+        cd.rectangle([26, 26, CW - 27, 78], fill=(24, 8, 16, 255))
+        draw_pixel_text(
+            cd,
+            44,
+            40,
+            f"SLOT 0{idx + 1} · {proj['title']}",
+            scale=4,
+            fill=(255, 216, 0, 255),
+            shadow=(0, 0, 0, 255),
+        )
 
-            # Left Preview Monitor (176 x 114)
-            draw_project_mini_preview(
-                cd, 20, 54, 176, 114, proj["preview_type"], proj["accent"], proj["secondary"], f, is_corr
-            )
+        # Left Square High-Res Logo Viewport (264 x 264)
+        draw_project_logo_or_preview(
+            card,
+            cd,
+            38,
+            94,
+            264,
+            264,
+            proj["slug"],
+            proj["preview_type"],
+            proj["accent"],
+            proj["secondary"],
+        )
 
-            # Right Metadata
-            draw_pixel_text(cd, 212, 60, proj["title"], scale=3, fill=(255, 255, 255, 255), shadow=(110, 0, 18, 255))
-            draw_pixel_text(cd, 212, 96, proj["subtitle"], scale=1, fill=(214, 204, 210, 255), shadow=None)
-            cd.rectangle([212, 116, CW - 22, 118], fill=(138, 0, 24, 255))
-            draw_pixel_text(cd, 212, 128, proj["stack"], scale=1, fill=(92, 172, 255, 255), shadow=None)
-            draw_pixel_text(
-                cd,
-                212,
-                150,
-                "> SELECT BUTTON BELOW TO OPEN",
-                scale=1,
-                fill=(255, 216, 0, 255) if not is_corr else (255, 15, 43, 255),
-                shadow=None,
-            )
+        # Right Metadata
+        rx = 332
+        draw_pixel_text(cd, rx, 108, proj["title"], scale=6, fill=(255, 255, 255, 255), shadow=(110, 0, 18, 255))
+        draw_pixel_text(cd, rx, 184, proj["subtitle"], scale=2, fill=(224, 214, 220, 255), shadow=(0, 0, 0, 255))
+        cd.rectangle([rx, 224, CW - 44, 228], fill=(168, 0, 28, 255))
+        draw_pixel_text(cd, rx, 248, proj["stack"], scale=2, fill=(92, 172, 255, 255), shadow=(0, 0, 0, 255))
+        draw_pixel_text(
+            cd,
+            rx,
+            302,
+            "> SELECT BUTTON BELOW TO OPEN REPOSITORY",
+            scale=2,
+            fill=(255, 216, 0, 255),
+            shadow=(0, 0, 0, 255),
+        )
 
-            if is_corr:
-                card = apply_exe_interference(card, intensity=0.65, seed=500 + idx * 10 + f)
-                c_dur.append(50)
-            else:
-                c_dur.append(95)
-            c_frames.append(apply_crt_scanlines(card, 20))
+        card_png = os.path.join(ASSETS_DIR, "projects", f"card-{proj['slug']}.png")
+        card.save(card_png)
 
+        # Also keep a 580x190 GIF copy for AE project / backward compatibility
+        card_small = card.resize((580, 190), Image.Resampling.LANCZOS)
         card_gif = os.path.join(ASSETS_DIR, "projects", f"card-{proj['slug']}.gif")
-        save_optimized_gif(c_frames, card_gif, c_dur)
+        save_optimized_gif([card_small], card_gif, [1000])
         if idx == 0:
-            c_frames[0].save(os.path.join(SRC_DIR, "project_card_sample.png"))
+            card_small.save(os.path.join(SRC_DIR, "project_card_sample.png"))
 
         btn_gif = os.path.join(ASSETS_DIR, "projects", f"btn-{proj['slug']}.gif")
         render_sonic_exe_menu_button(proj["btn_label"], btn_gif, width=285, height=50)
 
 
 # ============================================================================
-# 11. COMPOSITIONS 05, 06, 07: GREEN HILL ZONE CORRUPTED TECH PANELS
+# 11. COMPOSITIONS 05, 06, 07: GREEN HILL ZONE CORRUPTED TECH PANELS (6s / 6s)
 # ============================================================================
 def render_ghz_tech_panel(
     comp_id: str,
@@ -1307,7 +1431,6 @@ def render_ghz_tech_panel(
     height: int = 430,
 ):
     W, H = 1200, height
-    total_f = 28
     frames, durations = [], []
 
     # Export clean static monitor overlay for After Effects composition
@@ -1358,8 +1481,8 @@ def render_ghz_tech_panel(
             n_items = len(items)
             avail_w = W - 88
             gap = 12
-            slot_w = min(206, (avail_w - gap * (n_items - 1)) // n_items)
-            slot_h = 56
+            slot_w = min(212, (avail_w - gap * (n_items - 1)) // n_items)
+            slot_h = 58
             total_row_w = n_items * slot_w + (n_items - 1) * gap
             start_x = (W - total_row_w) // 2
 
@@ -1374,8 +1497,9 @@ def render_ghz_tech_panel(
                     tech,
                     corrupted=is_c,
                     highlight_border=(row_label == "CURRENTLY LEARNING"),
+                    canvas_img=ov,
                 )
-            cur_y += slot_h + 18
+            cur_y += slot_h + 16
 
         if ov_mode == "normal":
             ov.save(os.path.join(SRC_DIR, src_overlay_name))
@@ -1385,15 +1509,16 @@ def render_ghz_tech_panel(
     ov_norm = Image.open(os.path.join(SRC_DIR, src_overlay_name)).convert("RGBA")
     ov_corr = Image.open(os.path.join(SRC_DIR, src_overlay_name.replace(".png", "_corrupted.png"))).convert("RGBA")
 
-    for f in range(total_f):
-        is_corr = f in (18, 19)
-        is_pre = f == 17
-        sway = int(round(math.sin(f * 2 * math.pi / total_f) * 3))
-        cloud_dx = int(f * 120 / total_f)
+    # 24 frames Normal (6.0s) + 1 transition (100ms) + 24 frames Corrupted (6.0s) + 1 transition (100ms)
+    tech_timeline = [(False, 250, False)] * 24 + [(True, 100, True)] + [(True, 250, False)] * 24 + [(False, 100, True)]
+
+    for f, (is_corr, dur_ms, is_trans) in enumerate(tech_timeline):
+        sway = int(round(math.sin(f * 2 * math.pi / 24.0) * 3))
+        cloud_dx = int((f * 5) % 640)
 
         canvas = render_ghz_sky_layer(W, H, corrupted=is_corr, cloud_shift=cloud_dx)
         mtn = render_ghz_mountains_and_water_layer(W, H, corrupted=is_corr, water_phase=f)
-        fg = render_ghz_palms_and_ground_layer(W, H, corrupted=is_corr, sway_px=sway, include_critters=True)
+        fg = render_ghz_palms_and_ground_layer(W, H, corrupted=is_corr, sway_px=sway, include_critters=is_corr)
         canvas = Image.alpha_composite(canvas, mtn)
         canvas = Image.alpha_composite(canvas, fg)
 
@@ -1408,24 +1533,19 @@ def render_ghz_tech_panel(
 
         # Floating Golden/Corrupted Rings on the Green Hill ground corners
         for r_idx, rx in enumerate([132, W - 164]):
-            ring_sp = render_ring_sprite(size=30, phase=((f + r_idx * 3) % 10) / 10.0, corrupted=is_corr)
+            ring_sp = render_ring_sprite(size=30, phase=((f + r_idx) % 4) / 4.0, corrupted=is_corr)
             canvas.alpha_composite(ring_sp, (rx, H - 52))
 
-        if is_pre:
-            canvas = apply_exe_interference(canvas, intensity=0.45, seed=700 + f)
-            durations.append(45)
-        elif is_corr:
-            canvas = apply_exe_interference(canvas, intensity=0.95, seed=800 + f)
-            durations.append(55)
-        else:
-            durations.append(90)
+        if is_trans:
+            canvas = apply_exe_interference(canvas, intensity=0.55, seed=700 + f)
 
-        canvas = apply_crt_scanlines(canvas, alpha=22 if not is_corr else 42)
+        canvas = apply_crt_scanlines(canvas, alpha=18 if not is_corr else 28)
         frames.append(canvas)
+        durations.append(dur_ms)
 
     save_optimized_gif(frames, out_gif_path, durations)
     frames[0].save(os.path.join(ASSETS_DIR, "green-hill", f"{comp_id.lower()}_normal.png"))
-    frames[18].save(os.path.join(ASSETS_DIR, "green-hill", f"{comp_id.lower()}_corrupted.png"))
+    frames[26].save(os.path.join(ASSETS_DIR, "green-hill", f"{comp_id.lower()}_corrupted.png"))
 
 
 def build_comp_05_06_07_technologies():
@@ -1443,30 +1563,30 @@ def build_comp_05_06_07_technologies():
         height=430,
     )
 
-    # COMP_06_TECH_ECOSYSTEM (Exact 13 frameworks/tools from crimson-ecosystem.svg)
+    # COMP_06_TECH_ECOSYSTEM (Exact 13 frameworks/tools from crimson-ecosystem.svg — 5 + 4 + 4 layout)
     render_ghz_tech_panel(
         comp_id="COMP_06_TECH_ECOSYSTEM",
         title="GREEN HILL ZONE · ACT 2",
         subtitle="JAVASCRIPT & TYPESCRIPT ECOSYSTEM",
         rows_of_techs=[
-            (None, ["NODE.JS", "REACT", "NEXT.JS", "VUE", "NUXT", "ANGULAR"]),
-            (None, ["SVELTE", "ASTRO", "EXPRESS", "NESTJS", "VITE", "TAILWIND"]),
-            (None, ["FASTIFY"]),
+            (None, ["NODE.JS", "REACT", "NEXT.JS", "VUE", "NUXT"]),
+            (None, ["ANGULAR", "SVELTE", "ASTRO", "EXPRESS"]),
+            (None, ["NESTJS", "VITE", "TAILWIND", "FASTIFY"]),
         ],
         out_gif_path=os.path.join(ASSETS_DIR, "technologies", "tech-ecosystem-ghz.gif"),
         src_overlay_name="tech_monitors_ecosystem_overlay.png",
         height=420,
     )
 
-    # COMP_07_TECH_TOOLS (Exact 15 web/data/creative tools from crimson-tools.svg)
+    # COMP_07_TECH_TOOLS (Exact 15 web/data/creative tools from crimson-tools.svg — 5 + 5 + 5 layout)
     render_ghz_tech_panel(
         comp_id="COMP_07_TECH_TOOLS",
         title="GREEN HILL ZONE · ACT 3",
         subtitle="WEB · DATA · DEVOPS · CREATIVE TOOLS",
         rows_of_techs=[
-            (None, ["HTML5", "CSS3", "POSTGRES", "MYSQL", "SQL SERVER", "DOCKER"]),
-            (None, ["GIT", "GITHUB", "LINUX", "VS CODE", "VISUAL STUDIO", "BLENDER"]),
-            (None, ["AFTER EFFECTS", "PHOTOSHOP", "HOUDINI"]),
+            (None, ["HTML5", "CSS3", "POSTGRES", "MYSQL", "SQL SERVER"]),
+            (None, ["DOCKER", "GIT", "GITHUB", "LINUX", "VS CODE"]),
+            (None, ["VISUAL STUDIO", "BLENDER", "AFTER EFFECTS", "PHOTOSHOP", "HOUDINI"]),
         ],
         out_gif_path=os.path.join(ASSETS_DIR, "technologies", "tech-tools-ghz.gif"),
         src_overlay_name="tech_monitors_tools_overlay.png",
@@ -1480,14 +1600,14 @@ def build_comp_05_06_07_technologies():
 def build_comp_08_trophy_header():
     W, H = 1200, 110
     frames, durations = [], []
-    for f in range(20):
-        is_corr = f in (12, 13)
+    hdr_timeline = [(False, 250, False)] * 24 + [(True, 100, True)] + [(True, 250, False)] * 24 + [(False, 100, True)]
+    for f, (is_corr, dur_ms, is_trans) in enumerate(hdr_timeline):
         img = Image.new("RGBA", (W, H), (5, 3, 5, 255))
         d = ImageDraw.Draw(img)
         d.rectangle([28, 14, W - 28, H - 14], fill=(12, 6, 10, 255), outline=(168, 0, 28, 255) if not is_corr else (255, 15, 43, 255), width=3)
         d.rectangle([36, 22, W - 36, H - 22], outline=(255, 216, 0, 190) if not is_corr else (138, 0, 22, 255), width=1)
 
-        ring = render_ring_sprite(size=36, phase=(f % 10) / 10.0, corrupted=is_corr)
+        ring = render_ring_sprite(size=36, phase=(f % 4) / 4.0, corrupted=is_corr)
         img.alpha_composite(ring, (64, H // 2 - 18))
         img.alpha_composite(ring, (W - 100, H // 2 - 18))
 
@@ -1507,16 +1627,14 @@ def build_comp_08_trophy_header():
             68,
             "LIVE GITHUB ACHIEVEMENTS · ORIGINAL RANK THRESHOLDS",
             scale=2,
-            fill=(210, 198, 204, 255),
+            fill=(210, 198, 204, 255) if not is_corr else (255, 175, 188, 255),
             shadow=(0, 0, 0, 255),
             align="center",
         )
 
-        if is_corr:
-            img = apply_exe_interference(img, intensity=0.65, seed=900 + f)
-            durations.append(50)
-        else:
-            durations.append(90)
+        if is_trans:
+            img = apply_exe_interference(img, intensity=0.55, seed=900 + f)
+        durations.append(dur_ms)
         frames.append(apply_crt_scanlines(img, 22))
 
     out_gif = os.path.join(ASSETS_DIR, "trophies", "trophy-header-exe.gif")
@@ -1528,14 +1646,16 @@ def build_comp_09_footer():
     # Compact Footer Banner (1200 x 84) + 3 Clickable Menu Buttons (GITHUB, PORTFOLIO, LINKEDIN)
     W, H = 1200, 84
     frames, durations = [], []
-    for f in range(18):
-        is_corr = f == 12
+    ftr_timeline = [(False, 250, False)] * 24 + [(True, 100, True)] + [(True, 250, False)] * 24 + [(False, 100, True)]
+    for f, (is_corr, dur_ms, is_trans) in enumerate(ftr_timeline):
         img = Image.new("RGBA", (W, H), (5, 3, 5, 255))
         d = ImageDraw.Draw(img)
 
         # Classic Green Hill checkered bottom trim
         for c_i, x in enumerate(range(28, W - 28, 20)):
-            d.rectangle([x, H - 22, min(W - 28, x + 19), H - 10], fill=(180, 88, 0, 255) if c_i % 2 == 0 else (112, 48, 0, 255))
+            c_even = (180, 88, 0, 255) if not is_corr else (72, 16, 14, 255)
+            c_odd = (112, 48, 0, 255) if not is_corr else (38, 6, 8, 255)
+            d.rectangle([x, H - 22, min(W - 28, x + 19), H - 10], fill=c_even if c_i % 2 == 0 else c_odd)
         d.rectangle([28, H - 28, W - 28, H - 21], fill=(40, 200, 0, 255) if not is_corr else (184, 0, 28, 255))
 
         draw_pixel_text(
@@ -1548,11 +1668,9 @@ def build_comp_09_footer():
             shadow=(0, 0, 0, 255),
             align="center",
         )
-        if is_corr:
-            img = apply_exe_interference(img, intensity=0.55, seed=950 + f)
-            durations.append(50)
-        else:
-            durations.append(95)
+        if is_trans:
+            img = apply_exe_interference(img, intensity=0.5, seed=950 + f)
+        durations.append(dur_ms)
         frames.append(apply_crt_scanlines(img, 20))
 
     out_gif = os.path.join(ASSETS_DIR, "footer", "footer-banner-exe.gif")
