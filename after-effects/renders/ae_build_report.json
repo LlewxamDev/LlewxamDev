@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "aeVersion": "16.0x235",
+  "aepFile": "c:/Users/Evandro/Downloads/portfólio_bots/LlewxamDev/after-effects/LWX_EXE_Profile.aep",
+  "totalItems": 67,
+  "compositions": [
+    "COMP_01_HERO",
+    "COMP_02_IDENTITY",
+    "COMP_03_DIVIDERS",
+    "COMP_04_PROJECTS",
+    "COMP_05_TECH_LANGUAGES",
+    "COMP_06_TECH_ECOSYSTEM",
+    "COMP_07_TECH_TOOLS",
+    "COMP_08_TROPHY_SELECTION",
+    "COMP_09_FOOTER"
+  ]
+}

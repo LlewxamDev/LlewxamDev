@@ -1,0 +1,361 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="TROPHY SELECTION — @LlewxamDev">
+  <defs>
+    <pattern id="crtScanlines" width="4" height="3" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1" fill="#000000" opacity="0.28" />
+    </pattern>
+    <pattern id="ghzCheckTrim" width="32" height="16" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="16" height="16" fill="#5A2600" />
+      <rect x="16" y="0" width="16" height="16" fill="#321200" />
+    </pattern>
+    <style>
+      .px-head { font-family: 'Press Start 2P', 'VT323', 'Courier New', monospace; font-weight: 900; letter-spacing: 2px; }
+      .px-title { font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace; font-weight: 800; letter-spacing: 1px; }
+      .px-rank { font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace; font-weight: 900; letter-spacing: 1px; }
+      .px-sub { font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace; font-weight: 700; }
+      .px-score { font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace; font-weight: 700; }
+      .px-meta { font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace; font-weight: 700; letter-spacing: 1px; }
+      .px-tiny { font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace; font-weight: 700; letter-spacing: 0.5px; }
+      @keyframes pulseBorder {
+        0%, 100% { stroke-opacity: 1; }
+        50% { stroke-opacity: 0.45; }
+      }
+      @keyframes cursorBlink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.25; }
+      }
+      .pulse-stroke { animation: pulseBorder 2.2s infinite ease-in-out; }
+      .cursor-arrow { animation: cursorBlink 1.1s infinite steps(2, end); }
+    </style>
+  </defs>
+
+  <rect width="1200" height="560" fill="#050305" />
+  <rect x="14" y="14" width="1172" height="532" fill="#080407" stroke="#8A0018" stroke-width="3" />
+  <rect x="20" y="20" width="1160" height="520" fill="none" stroke="#2C0D16" stroke-width="1.5" />
+
+  <rect x="32" y="28" width="1136" height="54" fill="#12050A" stroke="#FF1538" stroke-width="2" />
+  <polygon points="52,48 64,55 52,62" fill="#FFD800" class="cursor-arrow" />
+  <text x="76" y="61" class="px-head" fill="#FFD800" font-size="20">TROPHY SELECTION</text>
+  <text x="1152" y="52" text-anchor="end" class="px-meta" fill="#FF4D6A" font-size="12">USER: @LLEWXAMDEV</text>
+  <text x="1152" y="69" text-anchor="end" class="px-tiny" fill="#9E8C92" font-size="10">ENGINE: GINWU05/GITHUB-PROFILE-TROPHY · VERIFIED THRESHOLDS</text>
+
+  
+      <g transform="translate(32, 98)">
+        <rect x="0" y="0" width="180" height="204" fill="#0B0508" stroke="#8A0018" stroke-width="1.8" />
+        <rect x="4" y="4" width="172" height="196" fill="none" stroke="#261018" stroke-width="1" />
+        <rect x="6" y="6" width="168" height="22" fill="#16060B" />
+        <text x="12" y="21" class="px-meta" fill="#B89EA6" font-size="10">SLOT 09</text>
+        <rect x="122" y="8" width="48" height="18" fill="#1A0726" stroke="#D946EF" stroke-width="1.2" />
+        <text x="146" y="20" text-anchor="middle" class="px-rank" fill="#F0ABFC" font-size="10">SECRET</text>
+
+        
+    <g>
+      <rect x="52" y="38" width="76" height="76" fill="#070306" stroke="#8A0018" stroke-width="2" />
+      <rect x="56" y="42" width="68" height="68" fill="#0C0509" stroke="#281018" stroke-width="1" stroke-dasharray="4 2" />
+      <path d="M 58 52 V 44 H 66" fill="none" stroke="#D946EF" stroke-width="2" />
+      <path d="M 114 44 H 122 V 52" fill="none" stroke="#D946EF" stroke-width="2" />
+      <path d="M 58 100 V 108 H 66" fill="none" stroke="#D946EF" stroke-width="2" />
+      <path d="M 114 108 H 122 V 100" fill="none" stroke="#D946EF" stroke-width="2" />
+      <rect x="70" y="96" width="40" height="6" fill="#5A2800" stroke="#C86400" stroke-width="1" />
+      <rect x="76" y="91" width="28" height="5" fill="#8A3E00" />
+      <polygon points="76,54 104,54 100,84 80,84" fill="#1A0726" stroke="#D946EF" stroke-width="2" />
+      <rect x="86" y="84" width="8" height="7" fill="#D946EF" />
+      <text x="90" y="71" text-anchor="middle" class="px-rank" fill="#F0ABFC" font-size="11">SECRET</text>
+      <text x="90" y="109" text-anchor="middle" class="px-tiny" fill="#7A646C" font-size="7">SLOT 09</text>
+    </g>
+  
+
+        <text x="90" y="132" text-anchor="middle" class="px-title" fill="#FFFFFF" font-size="13">ACHIEVESSSRANK</text>
+        <text x="90" y="150" text-anchor="middle" class="px-sub" fill="#F0ABFC" font-size="10.5">SSS Rank Hacker</text>
+        <text x="90" y="168" text-anchor="middle" class="px-score" fill="#E8DFE2" font-size="10.5">Have SSS Rank · 1 S-TIER RANK</text>
+
+        <rect x="14" y="180" width="152" height="8" fill="#180B10" stroke="#381620" stroke-width="1" />
+        <rect x="14" y="180" width="152" height="8" fill="#D946EF" />
+      </g>
+    
+
+      <g transform="translate(226, 98)">
+        <rect x="0" y="0" width="180" height="204" fill="#0B0508" stroke="#8A0018" stroke-width="1.8" />
+        <rect x="4" y="4" width="172" height="196" fill="none" stroke="#261018" stroke-width="1" />
+        <rect x="6" y="6" width="168" height="22" fill="#16060B" />
+        <text x="12" y="21" class="px-meta" fill="#B89EA6" font-size="10">SLOT 08</text>
+        <rect x="122" y="8" width="48" height="18" fill="#1A0726" stroke="#D946EF" stroke-width="1.2" />
+        <text x="146" y="20" text-anchor="middle" class="px-rank" fill="#F0ABFC" font-size="10">SECRET</text>
+
+        
+    <g>
+      <rect x="52" y="38" width="76" height="76" fill="#070306" stroke="#8A0018" stroke-width="2" />
+      <rect x="56" y="42" width="68" height="68" fill="#0C0509" stroke="#281018" stroke-width="1" stroke-dasharray="4 2" />
+      <path d="M 58 52 V 44 H 66" fill="none" stroke="#D946EF" stroke-width="2" />
+      <path d="M 114 44 H 122 V 52" fill="none" stroke="#D946EF" stroke-width="2" />
+      <path d="M 58 100 V 108 H 66" fill="none" stroke="#D946EF" stroke-width="2" />
+      <path d="M 114 108 H 122 V 100" fill="none" stroke="#D946EF" stroke-width="2" />
+      <rect x="70" y="96" width="40" height="6" fill="#5A2800" stroke="#C86400" stroke-width="1" />
+      <rect x="76" y="91" width="28" height="5" fill="#8A3E00" />
+      <polygon points="76,54 104,54 100,84 80,84" fill="#1A0726" stroke="#D946EF" stroke-width="2" />
+      <rect x="86" y="84" width="8" height="7" fill="#D946EF" />
+      <text x="90" y="71" text-anchor="middle" class="px-rank" fill="#F0ABFC" font-size="11">SECRET</text>
+      <text x="90" y="109" text-anchor="middle" class="px-tiny" fill="#7A646C" font-size="7">SLOT 08</text>
+    </g>
+  
+
+        <text x="90" y="132" text-anchor="middle" class="px-title" fill="#FFFFFF" font-size="13">MULTILANGUAGE</text>
+        <text x="90" y="150" text-anchor="middle" class="px-sub" fill="#F0ABFC" font-size="10.5">Rainbow Lang User</text>
+        <text x="90" y="168" text-anchor="middle" class="px-score" fill="#E8DFE2" font-size="10.5">13pt · 13 LANGUAGES</text>
+
+        <rect x="14" y="180" width="152" height="8" fill="#180B10" stroke="#381620" stroke-width="1" />
+        <rect x="14" y="180" width="152" height="8" fill="#D946EF" />
+      </g>
+    
+
+      <g transform="translate(420, 98)">
+        <rect x="0" y="0" width="180" height="204" fill="#0B0508" stroke="#8A0018" stroke-width="1.8" />
+        <rect x="4" y="4" width="172" height="196" fill="none" stroke="#261018" stroke-width="1" />
+        <rect x="6" y="6" width="168" height="22" fill="#16060B" />
+        <text x="12" y="21" class="px-meta" fill="#B89EA6" font-size="10">SLOT 02</text>
+        <rect x="122" y="8" width="48" height="18" fill="#2A060D" stroke="#FFD800" stroke-width="1.2" />
+        <text x="146" y="20" text-anchor="middle" class="px-rank" fill="#FFD800" font-size="10">SS</text>
+
+        
+    <g>
+      <rect x="52" y="38" width="76" height="76" fill="#070306" stroke="#8A0018" stroke-width="2" />
+      <rect x="56" y="42" width="68" height="68" fill="#0C0509" stroke="#281018" stroke-width="1" stroke-dasharray="4 2" />
+      <path d="M 58 52 V 44 H 66" fill="none" stroke="#FFD800" stroke-width="2" />
+      <path d="M 114 44 H 122 V 52" fill="none" stroke="#FFD800" stroke-width="2" />
+      <path d="M 58 100 V 108 H 66" fill="none" stroke="#FFD800" stroke-width="2" />
+      <path d="M 114 108 H 122 V 100" fill="none" stroke="#FFD800" stroke-width="2" />
+      <rect x="70" y="96" width="40" height="6" fill="#5A2800" stroke="#C86400" stroke-width="1" />
+      <rect x="76" y="91" width="28" height="5" fill="#8A3E00" />
+      <polygon points="76,54 104,54 100,84 80,84" fill="#2A060D" stroke="#FFD800" stroke-width="2" />
+      <rect x="86" y="84" width="8" height="7" fill="#FFD800" />
+      <text x="90" y="71" text-anchor="middle" class="px-rank" fill="#FFD800" font-size="11">SS</text>
+      <text x="90" y="109" text-anchor="middle" class="px-tiny" fill="#7A646C" font-size="7">SLOT 02</text>
+    </g>
+  
+
+        <text x="90" y="132" text-anchor="middle" class="px-title" fill="#FFFFFF" font-size="13">COMMITS</text>
+        <text x="90" y="150" text-anchor="middle" class="px-sub" fill="#FFD800" font-size="10.5">Deep Committer</text>
+        <text x="90" y="168" text-anchor="middle" class="px-score" fill="#E8DFE2" font-size="10.5">1.1kpt · 1138 COMMITS</text>
+
+        <rect x="14" y="180" width="152" height="8" fill="#180B10" stroke="#381620" stroke-width="1" />
+        <rect x="14" y="180" width="21" height="8" fill="#FFD800" />
+      </g>
+    
+
+      <g transform="translate(614, 98)">
+        <rect x="0" y="0" width="180" height="204" fill="#0B0508" stroke="#8A0018" stroke-width="1.8" />
+        <rect x="4" y="4" width="172" height="196" fill="none" stroke="#261018" stroke-width="1" />
+        <rect x="6" y="6" width="168" height="22" fill="#16060B" />
+        <text x="12" y="21" class="px-meta" fill="#B89EA6" font-size="10">SLOT 04</text>
+        <rect x="122" y="8" width="48" height="18" fill="#1E050B" stroke="#FF1538" stroke-width="1.2" />
+        <text x="146" y="20" text-anchor="middle" class="px-rank" fill="#FF4D6A" font-size="10">AA</text>
+
+        
+    <g>
+      <rect x="52" y="38" width="76" height="76" fill="#070306" stroke="#8A0018" stroke-width="2" />
+      <rect x="56" y="42" width="68" height="68" fill="#0C0509" stroke="#281018" stroke-width="1" stroke-dasharray="4 2" />
+      <path d="M 58 52 V 44 H 66" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 114 44 H 122 V 52" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 58 100 V 108 H 66" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 114 108 H 122 V 100" fill="none" stroke="#FF1538" stroke-width="2" />
+      <rect x="70" y="96" width="40" height="6" fill="#5A2800" stroke="#C86400" stroke-width="1" />
+      <rect x="76" y="91" width="28" height="5" fill="#8A3E00" />
+      <polygon points="76,54 104,54 100,84 80,84" fill="#1E050B" stroke="#FF1538" stroke-width="2" />
+      <rect x="86" y="84" width="8" height="7" fill="#FF1538" />
+      <text x="90" y="71" text-anchor="middle" class="px-rank" fill="#FF4D6A" font-size="11">AA</text>
+      <text x="90" y="109" text-anchor="middle" class="px-tiny" fill="#7A646C" font-size="7">SLOT 04</text>
+    </g>
+  
+
+        <text x="90" y="132" text-anchor="middle" class="px-title" fill="#FFFFFF" font-size="13">ISSUES</text>
+        <text x="90" y="150" text-anchor="middle" class="px-sub" fill="#FF4D6A" font-size="10.5">Hyper Issuer</text>
+        <text x="90" y="168" text-anchor="middle" class="px-score" fill="#E8DFE2" font-size="10.5">41pt · 41 ISSUES</text>
+
+        <rect x="14" y="180" width="152" height="8" fill="#180B10" stroke="#381620" stroke-width="1" />
+        <rect x="14" y="180" width="106" height="8" fill="#FF1538" />
+      </g>
+    
+
+      <g transform="translate(32, 318)">
+        <rect x="0" y="0" width="180" height="204" fill="#0B0508" stroke="#8A0018" stroke-width="1.8" />
+        <rect x="4" y="4" width="172" height="196" fill="none" stroke="#261018" stroke-width="1" />
+        <rect x="6" y="6" width="168" height="22" fill="#16060B" />
+        <text x="12" y="21" class="px-meta" fill="#B89EA6" font-size="10">SLOT 05</text>
+        <rect x="122" y="8" width="48" height="18" fill="#1E050B" stroke="#FF1538" stroke-width="1.2" />
+        <text x="146" y="20" text-anchor="middle" class="px-rank" fill="#FF4D6A" font-size="10">AA</text>
+
+        
+    <g>
+      <rect x="52" y="38" width="76" height="76" fill="#070306" stroke="#8A0018" stroke-width="2" />
+      <rect x="56" y="42" width="68" height="68" fill="#0C0509" stroke="#281018" stroke-width="1" stroke-dasharray="4 2" />
+      <path d="M 58 52 V 44 H 66" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 114 44 H 122 V 52" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 58 100 V 108 H 66" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 114 108 H 122 V 100" fill="none" stroke="#FF1538" stroke-width="2" />
+      <rect x="70" y="96" width="40" height="6" fill="#5A2800" stroke="#C86400" stroke-width="1" />
+      <rect x="76" y="91" width="28" height="5" fill="#8A3E00" />
+      <polygon points="76,54 104,54 100,84 80,84" fill="#1E050B" stroke="#FF1538" stroke-width="2" />
+      <rect x="86" y="84" width="8" height="7" fill="#FF1538" />
+      <text x="90" y="71" text-anchor="middle" class="px-rank" fill="#FF4D6A" font-size="11">AA</text>
+      <text x="90" y="109" text-anchor="middle" class="px-tiny" fill="#7A646C" font-size="7">SLOT 05</text>
+    </g>
+  
+
+        <text x="90" y="132" text-anchor="middle" class="px-title" fill="#FFFFFF" font-size="13">PULLREQUEST</text>
+        <text x="90" y="150" text-anchor="middle" class="px-sub" fill="#FF4D6A" font-size="10.5">Hyper Puller</text>
+        <text x="90" y="168" text-anchor="middle" class="px-score" fill="#E8DFE2" font-size="10.5">35pt · 35 PULL REQUESTS</text>
+
+        <rect x="14" y="180" width="152" height="8" fill="#180B10" stroke="#381620" stroke-width="1" />
+        <rect x="14" y="180" width="76" height="8" fill="#FF1538" />
+      </g>
+    
+
+      <g transform="translate(226, 318)">
+        <rect x="0" y="0" width="180" height="204" fill="#0B0508" stroke="#FFD800" stroke-width="2.5" />
+        <rect x="4" y="4" width="172" height="196" fill="none" stroke="#FF1538" stroke-width="1" />
+        <rect x="6" y="6" width="168" height="22" fill="#2C0710" />
+        <text x="12" y="21" class="px-meta" fill="#FFD800" font-size="10">SLOT 06</text>
+        <rect x="122" y="8" width="48" height="18" fill="#1E050B" stroke="#FF1538" stroke-width="1.2" />
+        <text x="146" y="20" text-anchor="middle" class="px-rank" fill="#FF4D6A" font-size="10">AA</text>
+
+        
+    <g>
+      <rect x="52" y="38" width="76" height="76" fill="#070306" stroke="#FFD800" stroke-width="2" />
+      <rect x="56" y="42" width="68" height="68" fill="#0C0509" stroke="#281018" stroke-width="1" stroke-dasharray="4 2" />
+      <path d="M 58 52 V 44 H 66" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 114 44 H 122 V 52" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 58 100 V 108 H 66" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 114 108 H 122 V 100" fill="none" stroke="#FF1538" stroke-width="2" />
+      <rect x="70" y="96" width="40" height="6" fill="#5A2800" stroke="#C86400" stroke-width="1" />
+      <rect x="76" y="91" width="28" height="5" fill="#8A3E00" />
+      <polygon points="76,54 104,54 100,84 80,84" fill="#1E050B" stroke="#FF1538" stroke-width="2" />
+      <rect x="86" y="84" width="8" height="7" fill="#FF1538" />
+      <text x="90" y="71" text-anchor="middle" class="px-rank" fill="#FF4D6A" font-size="11">AA</text>
+      <text x="90" y="109" text-anchor="middle" class="px-tiny" fill="#7A646C" font-size="7">SLOT 06</text>
+    </g>
+  
+
+        <text x="90" y="132" text-anchor="middle" class="px-title" fill="#FFFFFF" font-size="13">REPOSITORIES</text>
+        <text x="90" y="150" text-anchor="middle" class="px-sub" fill="#FF4D6A" font-size="10.5">Hyper Repo Creator</text>
+        <text x="90" y="168" text-anchor="middle" class="px-score" fill="#E8DFE2" font-size="10.5">32pt · 32 REPOSITORIES</text>
+
+        <rect x="14" y="180" width="152" height="8" fill="#180B10" stroke="#381620" stroke-width="1" />
+        <rect x="14" y="180" width="30" height="8" fill="#FF1538" />
+      </g>
+    
+
+      <g transform="translate(420, 318)">
+        <rect x="0" y="0" width="180" height="204" fill="#0B0508" stroke="#8A0018" stroke-width="1.8" />
+        <rect x="4" y="4" width="172" height="196" fill="none" stroke="#261018" stroke-width="1" />
+        <rect x="6" y="6" width="168" height="22" fill="#16060B" />
+        <text x="12" y="21" class="px-meta" fill="#B89EA6" font-size="10">SLOT 01</text>
+        <rect x="122" y="8" width="48" height="18" fill="#14141C" stroke="#8E7A82" stroke-width="1.2" />
+        <text x="146" y="20" text-anchor="middle" class="px-rank" fill="#D8CFD2" font-size="10">C</text>
+
+        
+    <g>
+      <rect x="52" y="38" width="76" height="76" fill="#070306" stroke="#8A0018" stroke-width="2" />
+      <rect x="56" y="42" width="68" height="68" fill="#0C0509" stroke="#281018" stroke-width="1" stroke-dasharray="4 2" />
+      <path d="M 58 52 V 44 H 66" fill="none" stroke="#8E7A82" stroke-width="2" />
+      <path d="M 114 44 H 122 V 52" fill="none" stroke="#8E7A82" stroke-width="2" />
+      <path d="M 58 100 V 108 H 66" fill="none" stroke="#8E7A82" stroke-width="2" />
+      <path d="M 114 108 H 122 V 100" fill="none" stroke="#8E7A82" stroke-width="2" />
+      <rect x="70" y="96" width="40" height="6" fill="#5A2800" stroke="#C86400" stroke-width="1" />
+      <rect x="76" y="91" width="28" height="5" fill="#8A3E00" />
+      <polygon points="76,54 104,54 100,84 80,84" fill="#14141C" stroke="#8E7A82" stroke-width="2" />
+      <rect x="86" y="84" width="8" height="7" fill="#8E7A82" />
+      <text x="90" y="71" text-anchor="middle" class="px-rank" fill="#D8CFD2" font-size="11">C</text>
+      <text x="90" y="109" text-anchor="middle" class="px-tiny" fill="#7A646C" font-size="7">SLOT 01</text>
+    </g>
+  
+
+        <text x="90" y="132" text-anchor="middle" class="px-title" fill="#FFFFFF" font-size="13">STARS</text>
+        <text x="90" y="150" text-anchor="middle" class="px-sub" fill="#D8CFD2" font-size="10.5">First Star</text>
+        <text x="90" y="168" text-anchor="middle" class="px-score" fill="#E8DFE2" font-size="10.5">8pt · 8 STARS</text>
+
+        <rect x="14" y="180" width="152" height="8" fill="#180B10" stroke="#381620" stroke-width="1" />
+        <rect x="14" y="180" width="119" height="8" fill="#28C800" />
+      </g>
+    
+
+      <g transform="translate(614, 318)">
+        <rect x="0" y="0" width="180" height="204" fill="#0B0508" stroke="#8A0018" stroke-width="1.8" />
+        <rect x="4" y="4" width="172" height="196" fill="none" stroke="#261018" stroke-width="1" />
+        <rect x="6" y="6" width="168" height="22" fill="#16060B" />
+        <text x="12" y="21" class="px-meta" fill="#B89EA6" font-size="10">SLOT 03</text>
+        <rect x="122" y="8" width="48" height="18" fill="#14141C" stroke="#8E7A82" stroke-width="1.2" />
+        <text x="146" y="20" text-anchor="middle" class="px-rank" fill="#D8CFD2" font-size="10">C</text>
+
+        
+    <g>
+      <rect x="52" y="38" width="76" height="76" fill="#070306" stroke="#8A0018" stroke-width="2" />
+      <rect x="56" y="42" width="68" height="68" fill="#0C0509" stroke="#281018" stroke-width="1" stroke-dasharray="4 2" />
+      <path d="M 58 52 V 44 H 66" fill="none" stroke="#8E7A82" stroke-width="2" />
+      <path d="M 114 44 H 122 V 52" fill="none" stroke="#8E7A82" stroke-width="2" />
+      <path d="M 58 100 V 108 H 66" fill="none" stroke="#8E7A82" stroke-width="2" />
+      <path d="M 114 108 H 122 V 100" fill="none" stroke="#8E7A82" stroke-width="2" />
+      <rect x="70" y="96" width="40" height="6" fill="#5A2800" stroke="#C86400" stroke-width="1" />
+      <rect x="76" y="91" width="28" height="5" fill="#8A3E00" />
+      <polygon points="76,54 104,54 100,84 80,84" fill="#14141C" stroke="#8E7A82" stroke-width="2" />
+      <rect x="86" y="84" width="8" height="7" fill="#8E7A82" />
+      <text x="90" y="71" text-anchor="middle" class="px-rank" fill="#D8CFD2" font-size="11">C</text>
+      <text x="90" y="109" text-anchor="middle" class="px-tiny" fill="#7A646C" font-size="7">SLOT 03</text>
+    </g>
+  
+
+        <text x="90" y="132" text-anchor="middle" class="px-title" fill="#FFFFFF" font-size="13">FOLLOWERS</text>
+        <text x="90" y="150" text-anchor="middle" class="px-sub" fill="#D8CFD2" font-size="10.5">First Friend</text>
+        <text x="90" y="168" text-anchor="middle" class="px-score" fill="#E8DFE2" font-size="10.5">6pt · 6 FOLLOWERS</text>
+
+        <rect x="14" y="180" width="152" height="8" fill="#180B10" stroke="#381620" stroke-width="1" />
+        <rect x="14" y="180" width="85" height="8" fill="#28C800" />
+      </g>
+    
+
+  <g transform="translate(812, 98)">
+    <rect x="0" y="0" width="356" height="424" fill="#0D0509" stroke="#FFD800" stroke-width="2.5" class="pulse-stroke" />
+    <rect x="6" y="6" width="344" height="412" fill="none" stroke="#FF1538" stroke-width="1.2" />
+
+    <rect x="8" y="8" width="340" height="32" fill="#26060E" />
+    <polygon points="20,19 29,24 20,29" fill="#FFD800" class="cursor-arrow" />
+    <text x="36" y="28" class="px-title" fill="#FFD800" font-size="12">SELECTED TROPHY DATA</text>
+    <text x="338" y="28" text-anchor="end" class="px-meta" fill="#FF4D6A" font-size="11">SLOT 06</text>
+
+    
+    <g>
+      <rect x="122" y="56" width="112" height="112" fill="#070306" stroke="#FFD800" stroke-width="2" />
+      <rect x="126" y="60" width="104" height="104" fill="#0C0509" stroke="#281018" stroke-width="1" stroke-dasharray="4 2" />
+      <path d="M 128 70 V 62 H 136" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 220 62 H 228 V 70" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 128 154 V 162 H 136" fill="none" stroke="#FF1538" stroke-width="2" />
+      <path d="M 220 162 H 228 V 154" fill="none" stroke="#FF1538" stroke-width="2" />
+      <rect x="158" y="150" width="40" height="6" fill="#5A2800" stroke="#C86400" stroke-width="1" />
+      <rect x="164" y="145" width="28" height="5" fill="#8A3E00" />
+      <polygon points="164,72 192,72 188,138 168,138" fill="#1E050B" stroke="#FF1538" stroke-width="2" />
+      <rect x="174" y="138" width="8" height="7" fill="#FF1538" />
+      <text x="178" y="89" text-anchor="middle" class="px-rank" fill="#FF4D6A" font-size="11">AA</text>
+      <text x="178" y="163" text-anchor="middle" class="px-tiny" fill="#7A646C" font-size="7">SLOT 06</text>
+    </g>
+  
+
+    <rect x="20" y="182" width="316" height="108" fill="#070306" stroke="#8A0018" stroke-width="1.5" />
+    <text x="178" y="210" text-anchor="middle" class="px-title" fill="#FFFFFF" font-size="16">HYPER REPO CREATOR</text>
+    <line x1="40" y1="222" x2="316" y2="222" stroke="#4A0A18" stroke-width="1.5" />
+    <text x="178" y="248" text-anchor="middle" class="px-head" fill="#FFD800" font-size="17">32 REPOSITORIES</text>
+    <rect x="120" y="260" width="116" height="22" fill="#1E050B" stroke="#FF1538" stroke-width="1.5" />
+    <text x="178" y="275" text-anchor="middle" class="px-rank" fill="#FF4D6A" font-size="13">RANK AA</text>
+
+    <text x="24" y="314" class="px-meta" fill="#D8CFD2" font-size="11">CATEGORY: REPOSITORIES (32pt)</text>
+    <text x="24" y="334" class="px-meta" fill="#9E8C92" font-size="11">NEXT RANK: AAA (REQ: 40 REPOSITORIES)</text>
+
+    <rect x="24" y="346" width="308" height="14" fill="#18090E" stroke="#5A1222" stroke-width="1.2" />
+    <rect x="28" y="349" width="60" height="8" fill="#FF1538" />
+    <text x="332" y="375" text-anchor="end" class="px-tiny" fill="#FFD800" font-size="10">PROGRESS: 20%</text>
+
+    <rect x="20" y="384" width="316" height="26" fill="#12060A" stroke="#38121C" stroke-width="1" />
+    <text x="178" y="401" text-anchor="middle" class="px-tiny" fill="#8E7A82" font-size="9.5">SLOT: assets/trophies/total-repositories.png</text>
+  </g>
+
+  <rect x="22" y="530" width="1156" height="8" fill="url(#ghzCheckTrim)" opacity="0.75" />
+  <rect x="22" y="527" width="1156" height="3" fill="#2A4018" />
+  <rect width="1200" height="560" fill="url(#crtScanlines)" pointer-events="none" />
+</svg>

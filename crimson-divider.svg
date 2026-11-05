@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="90" viewBox="0 0 1200 90">
-<rect width="1200" height="90" fill="#050505"/>
-<line x1="80" y1="45" x2="1120" y2="45" stroke="#222"/>
-<line x1="80" y1="45" x2="360" y2="45" stroke="#ff1538" stroke-width="2"><animate attributeName="x2" values="180;500;360" dur="5s" repeatCount="indefinite"/></line>
-<g fill="none" stroke="#ff1538" opacity=".4"><polygon points="1010,25 1025,16 1040,25 1040,43 1025,52 1010,43"><animateTransform attributeName="transform" type="translate" values="0 0;5 2;0 0" dur="7s" repeatCount="indefinite"/></polygon></g>
-</svg>

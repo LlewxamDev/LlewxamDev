@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/trophies",
+      "destination": "/api/trophies"
+    },
+    {
+      "source": "/api",
+      "destination": "/api/trophies"
+    },
+    {
+      "source": "/",
+      "destination": "/api/trophies"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/svg+xml; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=7200, s-maxage=7200, stale-while-revalidate=86400"
+        }
+      ]
+    }
+  ]
+}

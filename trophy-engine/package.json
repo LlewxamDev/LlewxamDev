@@ -1,0 +1,14 @@
+{
+  "name": "lwx-exe-trophy-engine",
+  "version": "1.0.0",
+  "description": "Custom Sonic.EXE Trophy Selection SVG Renderer for GitHub Profile README, preserving GinWU05/github-profile-trophy calculation logic.",
+  "type": "module",
+  "scripts": {
+    "verify": "node scripts/render-local-verify.mjs",
+    "test": "node scripts/test-trophy-engine.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}

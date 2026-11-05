@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Configuração central de slots de sprites personalizados para o sistema TROPHY SELECTION. Para substituir um placeholder pelo seu próprio sprite desenhado, basta salvar o PNG correspondente no caminho indicado (em trophy-engine/assets/trophies/ ou assets/trophies/) e manter ou atualizar o caminho abaixo.",
+  "defaultSelectedTrophy": "Commits",
+  "slots": {
+    "Stars": {
+      "spritePath": "assets/trophies/total-stars.png",
+      "unitLabel": "STARS",
+      "slotCode": "SLOT 01"
+    },
+    "Commits": {
+      "spritePath": "assets/trophies/total-commits.png",
+      "unitLabel": "COMMITS",
+      "slotCode": "SLOT 02"
+    },
+    "Followers": {
+      "spritePath": "assets/trophies/total-followers.png",
+      "unitLabel": "FOLLOWERS",
+      "slotCode": "SLOT 03"
+    },
+    "Issues": {
+      "spritePath": "assets/trophies/total-issues.png",
+      "unitLabel": "ISSUES",
+      "slotCode": "SLOT 04"
+    },
+    "PullRequest": {
+      "spritePath": "assets/trophies/total-pull-requests.png",
+      "unitLabel": "PULL REQUESTS",
+      "slotCode": "SLOT 05"
+    },
+    "Repositories": {
+      "spritePath": "assets/trophies/total-repositories.png",
+      "unitLabel": "REPOSITORIES",
+      "slotCode": "SLOT 06"
+    },
+    "Reviews": {
+      "spritePath": "assets/trophies/total-reviews.png",
+      "unitLabel": "REVIEWS",
+      "slotCode": "SLOT 07"
+    },
+    "MultiLanguage": {
+      "spritePath": "assets/trophies/secret-multilanguage.png",
+      "unitLabel": "LANGUAGES",
+      "slotCode": "SLOT 08"
+    },
+    "AchieveSSSRank": {
+      "spritePath": "assets/trophies/secret-super-rank.png",
+      "unitLabel": "S-TIER RANK",
+      "slotCode": "SLOT 09"
+    },
+    "LongTimeUser": {
+      "spritePath": "assets/trophies/secret-long-time-user.png",
+      "unitLabel": "YEARS ACTIVE",
+      "slotCode": "SLOT 10"
+    },
+    "AncientUser": {
+      "spritePath": "assets/trophies/secret-ancient-user.png",
+      "unitLabel": "VETERAN",
+      "slotCode": "SLOT 11"
+    },
+    "NewUser": {
+      "spritePath": "assets/trophies/secret-new-user.png",
+      "unitLabel": "COHORT",
+      "slotCode": "SLOT 12"
+    },
+    "Organizations": {
+      "spritePath": "assets/trophies/secret-organizations.png",
+      "unitLabel": "ORGANIZATIONS",
+      "slotCode": "SLOT 13"
+    },
+    "OGUser": {
+      "spritePath": "assets/trophies/secret-og-user.png",
+      "unitLabel": "2008 OG",
+      "slotCode": "SLOT 14"
+    },
+    "AllSuperRank": {
+      "spritePath": "assets/trophies/secret-all-super-rank.png",
+      "unitLabel": "ALL S RANK",
+      "slotCode": "SLOT 15"
+    }
+  }
+}
