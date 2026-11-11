@@ -16,8 +16,10 @@ A direção **Minimal Tech Showcase** foi projetada para que recrutadores técni
    - **Sophisticated Crimson (`#E11D48` / `#FF2E5C`)** como único destaque cromático de precisão.
    - **Alabaster White (`#F4F4F6`) & Technical Silver (`#A8A8B3`)** para tipografia limpa e contraste superior a 10:1 (WCAG AAA).
 3. **Animações Pontuais e Funcionais (Sem Poluição Visual):**
-   - **Banner Superior (`assets/minimal/hero-banner.gif`):** Movimento lento e contínuo de trilhas de circuito e conexões nodais em carmesim, sem efeito de digitação infinito e sem elementos piscando.
+   - **Banner Superior (`assets/minimal/hero-banner.gif`):** Movimento lento e contínuo de trilhas de circuito e conexões nodais em carmesim, sem texto ornamental, sem efeito de digitação infinito e sem elementos piscando. O título e as informações ficam no corpo do README.
    - **Projetos em Destaque (`assets/minimal/demo-*.gif`):** Demonstrações curtas e leves (< 350 KB nas interfaces de console) exibindo os sistemas funcionando na prática.
+
+4. **Regra CIE para o banner:** O Creative Intelligence Engine deve tratar o banner como uma peça de identidade visual, não como área de conteúdo. Usar apenas o título ou destaque visual essencial; não repetir no banner as informações que já aparecem no README.
 
 ---
 
@@ -29,3 +31,12 @@ A direção **Minimal Tech Showcase** foi projetada para que recrutadores técni
   - `photoshop/build_minimal_showcase_psd.jsx`: Script ExtendScript para reconstrução automatizada no Photoshop.
 - **Adobe After Effects CC 2019 (`after-effects/`):**
   - `after-effects/LLEW_Minimal_Tech_Showcase.aep`: Projeto editável com câmera 2.5D multi-plano, keyframes Bezier e efeitos nativos (`ADBE Glo2`), gerado via `after-effects/compositions/build_minimal_showcase_aep.jsx`.
+
+## 3. Conteúdo e evidência
+
+- As tecnologias devem ser divididas em quatro categorias e exibidas com logos: linguagens principais; back-end, APIs e dados; front-end e gráficos; ferramentas e ambiente.
+- A lista deve representar as tecnologias mais utilizadas e evitar tecnologias que não sejam relevantes para apresentação profissional.
+- Demos de projetos devem ser descritas como execução/registro do repositório, nunca como criação de um projeto quando apenas houve clonagem, execução e gravação.
+- Soul-List e LWX Lab usam logos quando não houver uma demonstração de execução apropriada.
+- HyperFlow 3D deve ser demonstrado no Blender; Polybech deve mostrar apenas a execução dos benchmarks e os resultados finais.
+- A seção final deve separar tecnologias em aprendizado das tecnologias mais utilizadas e exibir logos também nessa seção.

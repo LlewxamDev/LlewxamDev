@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://www.llewxam.me">
-  <img src="./assets/minimal/hero-banner.gif" width="100%" alt="Evandro Silva Amorim — Desenvolvimento de Sistemas · Software · Automação" />
+  <img src="./assets/minimal/hero-banner.gif" width="100%" alt="Minimal Tech Showcase — Evandro Silva Amorim" />
 </a>
 
 <br/><br/>
@@ -38,18 +38,41 @@ Estudante de **Análise e Desenvolvimento de Sistemas (ADS)** e desenvolvedor Fu
 
 Seleção das linguagens, frameworks e ferramentas mais utilizados nos meus projetos e sistemas em produção:
 
-<div align="center">
-  <img src="./assets/minimal/tech-stack-showcase.svg" width="100%" alt="Tecnologias Principais — TypeScript, JavaScript, Python, Rust, C++, SQL, Node.js, NestJS, Fastify, Express, React, Next.js, Vite, Tailwind, Docker, Git, Linux" />
-</div>
+### Linguagens principais
 
-<br/>
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111111" alt="JavaScript" />
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+<img src="https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white" alt="Rust" />
+<img src="https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" alt="C++" />
+<img src="https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="SQL" />
 
-| Domínio | Tecnologias Mais Utilizadas |
-| :--- | :--- |
-| **Linguagens Principais** | `TypeScript` · `JavaScript` · `Python` · `Rust` · `C++` · `SQL` |
-| **Back-end & APIs** | `Node.js` · `NestJS` · `Fastify` · `Express` · `Prisma` · `Drizzle ORM` |
-| **Front-end & Gráficos** | `React` · `Next.js` · `Vite` · `Tailwind CSS` · `Three.js / WebGL` · `HTML5 & CSS3` |
-| **Automação & Ambiente** | `Discord.js` · `Baileys (WebSockets)` · `PostgreSQL` · `Redis / BullMQ` · `Docker` · `Git & GitHub` · `Linux / Bash` · `PowerShell` |
+### Back-end, APIs & dados
+
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
+<img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS" />
+<img src="https://img.shields.io/badge/Fastify-000000?style=for-the-badge&logo=fastify&logoColor=white" alt="Fastify" />
+<img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express" />
+<img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis" />
+
+### Front-end & gráficos
+
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+<img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+<img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+<img src="https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white" alt="Three.js" />
+<img src="https://img.shields.io/badge/WebGL-990000?style=for-the-badge&logo=webgl&logoColor=white" alt="WebGL" />
+
+### Ferramentas & ambiente
+
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+<img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=111111" alt="Linux" />
+<img src="https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white" alt="PowerShell" />
+<img src="https://img.shields.io/badge/Blender-E87D0D?style=for-the-badge&logo=blender&logoColor=white" alt="Blender" />
 
 ---
 
@@ -67,7 +90,7 @@ Seleção das linguagens, frameworks e ferramentas mais utilizados nos meus proj
     <td width="48%" valign="top">
       <p><strong>Problema:</strong> APIs modernas sofrem com ataques de injeção, abuso de sessão e bursts de requisições onde middlewares puramente em JS introduzem gargalos de latência.</p>
       <p><strong>Solução:</strong> Plataforma modular de defesa web que combina um gateway HTTP em <strong>Fastify</strong> com crates nativos em <strong>Rust</strong> para inspeção de payloads e cálculo de risco em sub-milissegundos.</p>
-      <p><strong>Minha contribuição:</strong> Arquitetei o monorepo com 13 pacotes TypeScript (auth, sessão, CSRF, rate-limit, policy-engine, observabilidade), 4 crates Rust para normalização e scoring de risco, e o painel administrativo em React 19.</p>
+      <p><strong>Demonstração:</strong> Execução do repositório mostrando o gateway Fastify, a inspeção de payloads e o painel administrativo em funcionamento.</p>
       <p><code>TypeScript</code> · <code>Fastify</code> · <code>Rust</code> · <code>Prisma</code> · <code>Redis</code> · <code>React</code></p>
       <p>
         <a href="https://github.com/LlewxamDev/AegisCore"><strong>Repositório ↗</strong></a>
@@ -90,7 +113,7 @@ Seleção das linguagens, frameworks e ferramentas mais utilizados nos meus proj
     <td width="48%" valign="top">
       <p><strong>Problema:</strong> Vazamento de credenciais, permissões excessivas em pipelines CI/CD e dependências vulneráveis costumam passar despercebidos antes do merge.</p>
       <p><strong>Solução:</strong> Suite de auditoria automatizada com motor de varredura em <strong>Rust</strong>, CLI dedicada, fila de orquestração em <strong>Fastify + BullMQ</strong> e dashboard analítico em <strong>React</strong>.</p>
-      <p><strong>Minha contribuição:</strong> Desenvolvi o scanner de entropia e análise estática em Rust, a API orquestradora com filas Redis/BullMQ, a integração GitHub App via Octokit e o dashboard visual de pontuação de segurança.</p>
+      <p><strong>Demonstração:</strong> Execução do repositório mostrando o scanner, a fila de análise e o dashboard de pontuação de segurança.</p>
       <p><code>Rust</code> · <code>TypeScript</code> · <code>Fastify</code> · <code>BullMQ</code> · <code>Prisma</code> · <code>React</code></p>
       <p>
         <a href="https://github.com/LlewxamDev/AegisHub"><strong>Repositório ↗</strong></a>
@@ -106,15 +129,26 @@ Seleção das linguagens, frameworks e ferramentas mais utilizados nos meus proj
 <table>
   <tr>
     <td width="52%" valign="top">
-      <a href="https://github.com/LlewxamDev/Soul-List">
-        <img src="./assets/minimal/demo-bots-automation.gif" width="100%" alt="Soul-List & LWX Lab — Arquitetura Assíncrona de Bots em Node.js e TypeScript" />
-      </a>
+      <table>
+        <tr>
+          <td width="50%" align="center">
+            <a href="https://github.com/LlewxamDev/Soul-List">
+              <img src="./assets/projects/logos/logo-soullist.png" width="100%" alt="Logo do Soul-List" />
+            </a>
+          </td>
+          <td width="50%" align="center">
+            <a href="https://www.llewxam.me">
+              <img src="./assets/minimal/lwx-lab-logo.svg" width="100%" alt="Logo do LWX Lab" />
+            </a>
+          </td>
+        </tr>
+      </table>
     </td>
     <td width="48%" valign="top">
       <p><strong>Problema:</strong> Servidores comerciais e grupos de alta concorrência exigem automação de atendimento, triagem de pedidos e execução instantânea de comandos sem bloqueio de Event Loop.</p>
       <p><strong>Solução:</strong> <strong>Soul-List</strong> (motor WhatsApp via WebSockets diretos com mais de 1.400 comandos indexados em <code>O(1)</code>) e <strong>LWX Lab</strong> (automação comercial completa no Discord com tickets, orçamentos, fila de produção e integração com IA).</p>
-      <p><strong>Minha contribuição:</strong> Implementei o roteador de comandos de baixa latência, processamento nativo de mídia em buffer com Sharp/FFmpeg, persistência com Drizzle ORM e fluxos interativos em Discord.js v14.</p>
-      <p><code>TypeScript</code> · <code>Node.js</code> · <code>Baileys</code> · <code>Discord.js</code> · <code>Drizzle ORM</code> · <code>Zod</code></p>
+      <p><strong>Demonstração:</strong> O material visual usa somente as logos dos dois projetos; não representa uma nova implementação nem atribui a criação dos repositórios.</p>
+      <p><code>TypeScript</code> · <code>Node.js</code> · <code>Drizzle ORM</code> · <code>Zod</code></p>
       <p>
         <a href="https://github.com/LlewxamDev/Soul-List"><strong>Repositório (Soul-List) ↗</strong></a> &nbsp;·&nbsp;
         <a href="https://www.llewxam.me"><strong>Demonstração no Portfólio ↗</strong></a>
@@ -137,7 +171,7 @@ Seleção das linguagens, frameworks e ferramentas mais utilizados nos meus proj
     <td width="48%" valign="top">
       <p><strong>Problema:</strong> Retopologia manual, ruído temporal em renderização path-tracing e comparação empírica de algoritmos entre linguagens de baixo e alto nível exigem ferramentas precisas.</p>
       <p><strong>Solução:</strong> <strong>HyperFlow 3D</strong> entrega retopologia quad guiada por curvatura, baking PBR em 1 clique e denoiser temporal com patches C++ para o Blender 5.2+; <strong>Polybech</strong> executa benchmarks comparativos entre 7 linguagens.</p>
-      <p><strong>Minha contribuição:</strong> Escrevi os 4 módulos em Python e 3 patches de núcleo em C++ para o Blender no HyperFlow 3D, além da bateria automatizada de comparação algorítmica no Polybech.</p>
+      <p><strong>Formato da demonstração:</strong> Execução do HyperFlow diretamente no Blender; no Polybech, somente a etapa de benchmark e seus resultados finais.</p>
       <p><code>Python</code> · <code>C++</code> · <code>Rust</code> · <code>Assembly x86-64</code> · <code>TypeScript</code></p>
       <p>
         <a href="https://github.com/LlewxamDev/blender-hyperflow"><strong>Repositório (HyperFlow 3D) ↗</strong></a> &nbsp;·&nbsp;
@@ -161,7 +195,7 @@ Seleção das linguagens, frameworks e ferramentas mais utilizados nos meus proj
     <td width="48%" valign="top">
       <p><strong>Problema:</strong> Portfólios tradicionais costumam ser páginas estáticas padronizadas que não demonstram domínio real de engenharia front-end, programação gráfica ou arquitetura de estado.</p>
       <p><strong>Solução:</strong> Experiência web autoral construída com pipeline híbrido <strong>WebGL (GLSL Vertex & Fragment Shaders) + Canvas 2D + React 18/TypeScript</strong>, com parallax multi-plano por mapa de profundidade e player físico de flipbook sincronizado a vídeo.</p>
-      <p><strong>Minha contribuição:</strong> Desenvolvi os shaders GLSL customizados (refração FBM, emissão seletiva e câmera 2.5D), a máquina de estados determinística de 12 estágios e o motor de física de tinta em Canvas 2D.</p>
+      <p><strong>Formato da demonstração:</strong> Personagem totalmente visível desde o início, movimento lateral do mouse para evidenciar o parallax e o cursor personalizado, finalizando após a abertura da janela de navegação.</p>
       <p><code>TypeScript</code> · <code>React</code> · <code>WebGL / GLSL</code> · <code>Canvas 2D</code> · <code>Vite</code></p>
       <p>
         <a href="https://www.llewxam.me"><strong>Demonstração Ao Vivo (llewxam.me) ↗</strong></a> &nbsp;·&nbsp;
@@ -174,6 +208,14 @@ Seleção das linguagens, frameworks e ferramentas mais utilizados nos meus proj
 ---
 
 ## `04` — Em constante evolução
+
+- **Atualmente aprendendo:**
+  <img src="https://img.shields.io/badge/Java-E76F00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
+  <img src="https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" alt="C++" />
+  <img src="https://img.shields.io/badge/C%23-68217A?style=for-the-badge&logo=csharp&logoColor=white" alt="C#" />
+  <img src="https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white" alt="Rust" />
+  <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
+  <img src="https://img.shields.io/badge/Assembly-6E7681?style=for-the-badge&logo=assemblyscript&logoColor=white" alt="Assembly" />
 
 - **Arquitetura Back-end & Sistemas Escaláveis:** Aprofundando padrões de arquitetura modular, injeção de dependência, filas distribuídas e microsserviços com **NestJS**, **Fastify**, **Redis/BullMQ** e bancos relacionais.
 - **Engenharia Híbrida de Alta Performance:** Expandindo a integração entre **TypeScript/Node.js** e motores nativos em **Rust** e **C++** para segurança ofensiva/defensiva, parsers de baixa latência e ferramentas de linha de comando.
